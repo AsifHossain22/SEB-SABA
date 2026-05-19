@@ -1,50 +1,62 @@
 const LABELS = [
-  { id: 'l1', name: 'Design', color: '#a855f7' },
-  { id: 'l2', name: 'Dev', color: '#388bfd' },
-  { id: 'l3', name: 'Urgent', color: '#f85149' },
-  { id: 'l4', name: 'Review', color: '#d29922' },
-  { id: 'l5', name: 'Done', color: '#3fb950' },
-  { id: 'l6', name: 'Research', color: '#14b8a6' },
+  { id: 'l1', name: 'Urgent & Important', color: '#EF4444' },
+  { id: 'l2', name: 'Not Urgent & Important', color: '#F97316' },
+  { id: 'l3', name: 'Urgent & Not Important', color: '#3B82F6' },
+  { id: 'l4', name: 'Not Urgent & Not Important', color: '#71717A' },
 ];
 
-const COVER_COLORS = ['#ef4444', '#22c55e', '#3b82f6', '#a855f7', '#6b7280'];
+const COVER_COLORS = ['#EF4444', '#F97316', '#3B82F6', '#71717A'];
 
 // MainDataObject
 let state = {
-  boardTitle: 'Product Roadmap',
-  listOrder: ['l-1', 'l-2', 'l-3'],
+  boardTitle: 'Time Management Matrix',
+  listOrder: ['l-1', 'l-2', 'l-3', 'l-4'],
   lists: {
-    'l-1': { id: 'l-1', title: 'To Do', cardIds: ['c-1'] },
-    'l-2': { id: 'l-2', title: 'Doing', cardIds: ['c-2'] },
-    'l-3': { id: 'l-3', title: 'Done', cardIds: ['c-3'] },
+    'l-1': { id: 'l-1', title: 'Quadrant 1', cardIds: ['c-1'] },
+    'l-2': { id: 'l-2', title: 'Quadrant 2', cardIds: ['c-2'] },
+    'l-3': { id: 'l-3', title: 'Quadrant 3', cardIds: ['c-3'] },
+    'l-4': { id: 'l-4', title: 'Quadrant 4', cardIds: ['c-4'] },
   },
   cards: {
     'c-1': {
       id: 'c-1',
-      title: 'Title: To Do',
-      description: 'Description: To Do',
-      labels: ['l1'],
-      dueDate: '2026-10-1',
-      checklist: [{ id: 'ci-1', text: 'Checklist: To Do', done: true }],
-      coverColor: null,
+      title: 'Urgent & Important',
+      description:
+        'Tasks that require immediate attention, such as crises or pressing deadlines.',
+      labels: [''],
+      dueDate: `${new Date().toLocaleDateString()}`, // Today
+      checklist: [{ id: 'ci-1', text: 'Add your task list', done: false }],
+      coverColor: `${COVER_COLORS[0]}`, // Red
     },
     'c-2': {
       id: 'c-2',
-      title: 'Title: Doing',
-      description: 'Description: Doing',
-      labels: ['l2'],
-      dueDate: '2026-10-1',
-      checklist: [{ id: 'ci-2', text: 'Checklist: Doing', done: true }],
-      coverColor: null,
+      title: 'Not Urgent & Important',
+      description:
+        'Activities focused on long-term goals, planning and personal growth.',
+      labels: [''],
+      dueDate: `${new Date().toLocaleDateString()}`, // Today
+      checklist: [{ id: 'ci-2', text: 'Add your task list', done: false }],
+      coverColor: `${COVER_COLORS[1]}`, // Orange
     },
     'c-3': {
       id: 'c-3',
-      title: 'Title: Done',
-      description: 'Description: Done',
-      labels: ['l3'],
-      dueDate: '2026-10-1',
-      checklist: [{ id: 'ci-3', text: 'Checklist: Done', done: true }],
-      coverColor: null,
+      title: 'Urgent & Not Important',
+      description:
+        'Distractions and interruptions that need to be minimized, like unnecessary meetings.',
+      labels: [''],
+      dueDate: `${new Date().toLocaleDateString()}`, // Today
+      checklist: [{ id: 'ci-3', text: 'Add your task list', done: false }],
+      coverColor: `${COVER_COLORS[2]}`, // Blue
+    },
+    'c-4': {
+      id: 'c-4',
+      title: 'Not Urgent & Not Important',
+      description:
+        'Time-wasting activities that should be minimized or eliminated, such as excessive social media use.',
+      labels: [''],
+      dueDate: `${new Date().toLocaleDateString()}`, // Today
+      checklist: [{ id: 'ci-4', text: 'Add your task list', done: false }],
+      coverColor: `${COVER_COLORS[3]}`, // Gray
     },
   },
   openCardId: null,
@@ -644,7 +656,7 @@ function openModal(cardId) {
   autoResize(titleInp);
 
   // ListTag
-  document.getElementById('modalListTag').textContent = 'in list ' + listTitle;
+  document.getElementById('modalListTag').textContent = '' + listTitle;
 
   // Description
   renderModalDesc(card);
@@ -1192,9 +1204,3 @@ function resetBoard(event) {
   // Reload page
   location.reload();
 }
-
-// Footer
-document.body.insertAdjacentHTML(
-  'beforeend',
-  `<div style="position:fixed;bottom:10px;right:16px;font-size:.65rem;color:#30363d;pointer-events:none">⚡ TaskFlow - Task Management App</div>`,
-);

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SiteTitle -->
-  <title>Task Flow — Task Management Application</title>
+  <title>TaskFlow — Time Management Matrix</title>
 
   <!-- Google Fonts: Plus Jakarta Sans + Syne -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -22,13 +22,13 @@
 <body>
   <!-- Navbar -->
   <nav id="navbar">
-    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:10px;">
       <a class="nav-logo" href="" onclick="resetBoard(event)">
         <div class="nav-logo-icon">⚡</div>
         <span>TaskFlow</span>
       </a>
       <div style="width:1px;height:20px;background:var(--border)"></div>
-      <input id="boardTitleInput" class="nav-board-title" value="Create Your Tasks" />
+      <input id="boardTitleInput" class="nav-board-title" value="Time Management Matrix" />
     </div>
 
     <div class="nav-right">
@@ -79,7 +79,7 @@
         <span class="modal-title-icon">📋</span>
         <div class="modal-title-area">
           <textarea id="modalTitle" class="modal-title-input" rows="1" spellcheck="false"></textarea>
-          <span class="modal-list-tag" id="modalListTag">in list …</span>
+          <span class="modal-list-tag" id="modalListTag">List: </span>
         </div>
         <button class="modal-close" onclick="closeModal()">✕</button>
       </div>
@@ -194,6 +194,13 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Footer -->
+  <div
+    style="color:#30363d;font-size:.65rem;position:fixed;bottom:50px;left:50%;transform:translateX(-50%);pointer-events:none;width:70%;text-align:center;">
+    <p>⚡ TaskFlow - Task Management App</p>
+    <p style="margin-top:4px">Developed by <span style="color:var(--brand)">Hi ASIF</span></p>
   </div>
 
   <!-- Scripts -->

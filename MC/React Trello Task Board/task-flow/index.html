@@ -199,7 +199,7 @@
   <!-- Footer -->
   <div
     style="color:#30363d;font-size:.65rem;position:fixed;bottom:50px;left:50%;transform:translateX(-50%);pointer-events:none;width:70%;text-align:center;">
-    <p>⚡ TaskFlow - Task Management App</p>
+    <p>⚡ TaskFlow - Time Management Matrix App</p>
     <p style="margin-top:4px">Developed by <span style="color:var(--brand)">Hi ASIF</span></p>
   </div>
 
@@ -208,7 +208,25 @@
 
   <!--! SecurityCode -->
   <script>
-    // No Security :(
+    /* Website Security */
+    document.addEventListener("contextmenu", (event) => event.preventDefault());
+    // Disable right-click
+
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        // Disable Ctrl+U (View Source)
+        (event.ctrlKey && (event.key === "u" || event.key === "U")) ||
+        // Disable Ctrl+Shift+I (DevTools)
+        (event.ctrlKey &&
+          event.shiftKey &&
+          (event.key === "i" || event.key === "I")) ||
+        // Disable F12 (DevTools)
+        event.key === "F12"
+      ) {
+        event.preventDefault();
+      }
+    });
   </script>
 </body>
 

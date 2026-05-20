@@ -8,5 +8,4 @@ const main = async () => {
     console.log(`Server is running on PORT ${config.port}`);
   });
 };
-
 main();

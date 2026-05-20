@@ -3,8 +3,11 @@ import express, {
   type Request,
   type Response,
 } from 'express';
+import { logger } from './middleware/logger';
 
 const app: Application = express();
+
+app.use(logger);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello SERVER!');

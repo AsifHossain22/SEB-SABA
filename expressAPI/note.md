@@ -12,3 +12,6 @@
 - "moduleResolution": "bundler" in 'tsconfig.json' file
 
 - npm i express
+
+- "scripts": { "dev": "tsx watch ./src/index.ts" } in 'package.json' file
+- "type": "module" in 'package.json' file

@@ -25,6 +25,7 @@ const createUser = async (req: Request, res: Response) => {
 
 // GetAllUser - GET
 const getAllUsers = async (req: Request, res: Response) => {
+  console.log('From user controller', req.user);
   try {
     const result = await userService.getAllUsersFromDB();
 

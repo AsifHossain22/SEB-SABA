@@ -161,3 +161,7 @@ Method -> GET - Time -> 1779370992128 - URL -> /api/users
 Method -> GET - Time -> 1779371158824 - URL -> /api/users
 
 Method -> GET - Time -> 1779371457865 - URL -> /api/users
+
+Method -> POST - Time -> 1779372655410 - URL -> /api/users
+
+Method -> POST - Time -> 1779372679559 - URL -> /api/users

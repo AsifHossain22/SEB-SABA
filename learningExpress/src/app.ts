@@ -8,6 +8,8 @@ import { profileRoute } from './modules/profile/profile.route';
 import { authRoute } from './modules/auth/auth.route';
 import logger from './middleware/logger';
 import CookieParser from 'cookie-parser';
+import cors from 'cors';
+import globalErrorHandler from './middleware/globalErrorHandler';
 
 const app: Application = express();
 
@@ -15,6 +17,11 @@ const app: Application = express();
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+  }),
+);
 
 // CookieParserMiddleware
 app.use(CookieParser());
@@ -41,5 +48,8 @@ app.use('/api/profile', profileRoute);
 
 // AuthRoute
 app.use('/api/auth', authRoute);
+
+// GlobalErrorHandlingMiddleware
+app.use(globalErrorHandler);
 
 export default app;

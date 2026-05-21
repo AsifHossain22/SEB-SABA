@@ -37,6 +37,7 @@ const auth = (...roles: TRoles[]) => {
       ) as JwtPayload;
       // console.log(decodedToken);
 
+      // FindUserInDatabase
       const userData = await pool.query(
         `
       SELECT * FROM users WHERE email = $1
@@ -45,7 +46,6 @@ const auth = (...roles: TRoles[]) => {
       );
       // console.log(userData);
 
-      // FindUserInDatabase
       const user = userData.rows[0];
       // console.log(user);
 

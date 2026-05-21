@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { userController } from './user.controller';
 import auth from '../../middleware/auth';
+import { TUserRole } from '../../types';
 
 const router = Router();
 
@@ -8,7 +9,11 @@ const router = Router();
 router.post('/', userController.createUser);
 
 // GET - GetAllUsers
-router.get('/', auth(), userController.getAllUsers); // ProtectedRoute
+router.get(
+  '/',
+  auth(TUserRole.admin, TUserRole.agent),
+  userController.getAllUsers,
+); // ProtectedRoute
 
 // GET - GetSingleData
 router.get('/:id', userController.getSingleUser);

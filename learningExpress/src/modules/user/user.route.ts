@@ -8,7 +8,7 @@ const router = Router();
 router.post('/', userController.createUser);
 
 // GET - GetAllUsers
-router.get('/', auth(), userController.getAllUsers);
+router.get('/', auth(), userController.getAllUsers); // ProtectedRoute
 
 // GET - GetSingleData
 router.get('/:id', userController.getSingleUser);

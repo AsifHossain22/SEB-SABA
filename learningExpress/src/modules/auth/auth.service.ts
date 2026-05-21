@@ -42,6 +42,7 @@ const loginUserIntoDB = async (payload: {
   });
   return { accessToken };
 };
+
 export const authService = {
   loginUserIntoDB,
 };

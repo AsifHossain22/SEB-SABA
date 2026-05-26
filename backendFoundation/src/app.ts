@@ -12,7 +12,6 @@ const app: Application = express();
 app.use(logger);
 
 app.get('/', (req: Request, res: Response) => {
-  throw new Error('Next Level Server is dying!');
   res.send('Hello Next Level Server!');
 });
 

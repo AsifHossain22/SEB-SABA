@@ -32,3 +32,6 @@
       - sendResponse.ts
     - /middleware
       - logger.ts
+      - globalErrorHandler.ts
+    - /types
+      - index.ts

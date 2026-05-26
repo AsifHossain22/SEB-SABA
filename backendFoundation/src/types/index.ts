@@ -6,24 +6,24 @@ export type TUsers = {
   id: number;
   name: string;
   email: string;
-  passwordHash: string;
+  password_hash: string;
   age: number;
   role: TRole;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
 };
 
 export type TRUser = Omit<
   TUsers,
-  'id' | 'passwordHash' | 'createdAt' | 'updatedAt'
+  'id' | 'password_hash' | 'created_at' | 'updated_at'
 >;
 
 export type TOrders = {
   id: number;
-  customerId: number;
+  customer_id: number;
   food: string;
   quantity: number;
   price: number;
-  createdAt: Date;
-  updatedAt: Date;
+  created_at: Date;
+  updated_at: Date;
 };

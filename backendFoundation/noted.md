@@ -35,3 +35,14 @@
       - globalErrorHandler.ts
     - /types
       - index.ts
+    - /api
+      - /routes
+        - auth.routes.ts
+      - /controllers
+        - auth.controllers.ts
+      - /services
+        - auth.services.ts
+11. npm i bcrypt
+    - npm i --save-dev @types/bcrypt
+12. npm install jsonwebtoken
+    - npm i --save-dev @types/jsonwebtoken

@@ -28,3 +28,7 @@
 10. **_./src_**
     - /db
       - index.ts
+    - /utils
+      - sendResponse.ts
+    - /middleware
+      - logger.ts

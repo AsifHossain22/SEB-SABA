@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from 'express';
 import { sendResponse } from './sendResponse';
 import { verifyToken } from './jwt';
 import authService from '../api/services/auth.service';
+import type { TRole } from '../types';
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization;
@@ -25,4 +26,17 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
   req.user = user;
 
   next();
+};
+
+export const authorizeRole = (...roles: TRole[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user) {
+      return res.send('Unauthorized!');
+    }
+
+    if (!roles.includes(req.user.role)) {
+      return res.send('You have no permission!');
+    }
+    return next();
+  };
 };

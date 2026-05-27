@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { login, refresh, signup } from '../controllers/auth.controller';
-import { auth } from '../../utils/auth';
+import { auth, authorizeRole } from '../../utils/auth';
 
 const router = Router();
 
@@ -10,7 +10,7 @@ router.get('/refresh', refresh);
 
 router.get('/me', () => {});
 
-router.get('/test', auth, (req, res) => {
+router.get('/test', auth, authorizeRole('super_admin'), (req, res) => {
   res.send('This is Super Sensitive Secret!');
 });
 

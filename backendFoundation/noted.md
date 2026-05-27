@@ -37,14 +37,16 @@
       - index.ts
     - /api
       - /routes
-        - auth.routes.ts
+        - auth.route.ts
       - /controllers
-        - auth.controllers.ts
+        - auth.controller.ts
       - /services
-        - auth.services.ts
+        - auth.service.ts
 11. npm i bcrypt
     - npm i --save-dev @types/bcrypt
 12. npm install jsonwebtoken
     - npm i --save-dev @types/jsonwebtoken
 13. npm install cookie-parser
     - npm i --save-dev @types/cookie-parser
+14. ./src/utils/auth.ts
+15. ./src/types/express.d.ts

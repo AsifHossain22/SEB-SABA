@@ -46,3 +46,5 @@
     - npm i --save-dev @types/bcrypt
 12. npm install jsonwebtoken
     - npm i --save-dev @types/jsonwebtoken
+13. npm install cookie-parser
+    - npm i --save-dev @types/cookie-parser

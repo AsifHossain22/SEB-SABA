@@ -1,0 +1,40 @@
+<mxfile host="Electron">
+  <diagram name="Page-1" id="-Qn-Kf31sr6m0PozA870">
+    <mxGraphModel dx="1075" dy="661" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="jC_v8p7fhwYBmgYYjYWM-1" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" value="courses" vertex="1">
+          <mxGeometry height="140" width="190" x="330" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="jC_v8p7fhwYBmgYYjYWM-2" parent="jC_v8p7fhwYBmgYYjYWM-1" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="c_id&lt;br&gt;name&lt;br&gt;i_id" vertex="1">
+          <mxGeometry height="90" width="190" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="jC_v8p7fhwYBmgYYjYWM-11" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" value="students" vertex="1">
+          <mxGeometry height="140" width="190" x="40" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="jC_v8p7fhwYBmgYYjYWM-12" parent="jC_v8p7fhwYBmgYYjYWM-11" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="id&lt;br&gt;name&lt;br&gt;email" vertex="1">
+          <mxGeometry height="90" width="190" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="jC_v8p7fhwYBmgYYjYWM-13" parent="1" style="swimlane;childLayout=stackLayout;horizontal=1;startSize=50;horizontalStack=0;rounded=1;fontSize=14;fontStyle=0;strokeWidth=2;resizeParent=0;resizeLast=1;shadow=0;dashed=0;align=center;arcSize=4;whiteSpace=wrap;html=1;" value="instructors" vertex="1">
+          <mxGeometry height="140" width="190" x="620" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="jC_v8p7fhwYBmgYYjYWM-14" parent="jC_v8p7fhwYBmgYYjYWM-13" style="align=left;strokeColor=none;fillColor=none;spacingLeft=4;spacingRight=4;fontSize=12;verticalAlign=top;resizable=0;rotatable=0;part=1;html=1;whiteSpace=wrap;" value="i_id&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;&lt;br&gt;name&lt;br&gt;gender&amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;" vertex="1">
+          <mxGeometry height="90" width="190" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="jC_v8p7fhwYBmgYYjYWM-17" edge="1" parent="1" source="jC_v8p7fhwYBmgYYjYWM-12" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=ERmany;startArrow=ERmany;rounded=0;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=-0.018;entryY=0.164;entryDx=0;entryDy=0;entryPerimeter=0;" target="jC_v8p7fhwYBmgYYjYWM-1" value="">
+          <mxGeometry height="100" relative="1" width="100" as="geometry">
+            <mxPoint x="230" y="240" as="sourcePoint" />
+            <mxPoint x="330" y="140" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jC_v8p7fhwYBmgYYjYWM-18" edge="1" parent="1" source="jC_v8p7fhwYBmgYYjYWM-2" style="edgeStyle=entityRelationEdgeStyle;fontSize=12;html=1;endArrow=baseDash;startArrow=ERmany;rounded=0;exitX=0.99;exitY=0.671;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitPerimeter=0;endFill=0;" target="jC_v8p7fhwYBmgYYjYWM-13" value="">
+          <mxGeometry height="100" relative="1" width="100" as="geometry">
+            <mxPoint x="523" y="237.5" as="sourcePoint" />
+            <mxPoint x="620" y="142.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

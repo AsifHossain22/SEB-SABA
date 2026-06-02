@@ -23,3 +23,19 @@
   - DOUBLE PRECISION (float8) : 8 bytes
   - NUMERIC / DECIMAL : Variable
   - SERIAL : 4 bytes (auto-increment integer)
+
+- Character (Types):
+  - CHAR(n) : n bytes
+  - VARCHAR(n) : Variable
+  - TEXT : Variable
+
+- Date (Types):
+  - DATE
+  - TIME
+  - TIMETZ
+  - TIMESTAMP
+  - TIMESTAMPZ
+  - INTERVAL
+
+- UUID - Universally Unique Identifier (Types) :
+  - UUID

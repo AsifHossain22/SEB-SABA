@@ -1,0 +1,11 @@
+-- OR Operator -- Select students from the USA or from UK: select \* from
+students select first_name, country_code from students where country_code =
+'United States' or country_code = 'United Kingdom';
+
+-- Select students with a grade of 'A' or 'B' in Computer Science & Data
+Science: select first_name, course, grade from students where (grade = 'A' or
+grade = 'B') and (course = 'Computer Science' or course = 'Data Science');
+
+-- AND Operator -- Select students from United Arab Emirates or Saudi Arabia and
+the age is 25: select \* from students where (country_code = 'United Arab
+Emirates' or country_code = 'Saudi Arabia') and age = 23;

@@ -7,8 +7,6 @@ select first_name, grade from students where not grade = 'A';
 
 -- Scaler functions -- upper, lower, concat, length
 
--- Aggregate functions -- avg, max, min, sum, count
-
 select upper(first_name) as first_name_in_upper, first_name from students;
 
 select concat(first_name, last_name) as full_name, first_name from students;

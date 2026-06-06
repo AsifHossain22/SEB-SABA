@@ -1,0 +1,55 @@
+// CreateTable
+create table employe (
+  id serial, 
+  name varchar(100), 
+  age int
+  );
+
+// RenamingTableName 
+alter table employe rename to employee
+
+// AddColumn
+alter table employee 
+add column email varchar(50);
+
+// DropColumn
+alter table employee 
+drop column email;
+
+// RenamingColumn
+alter table employee 
+rename column name to user_name;
+
+// ModifyingConstraint
+alter table employee 
+alter column user_name type varchar(50);
+
+// AddConstraint
+alter table employee 
+alter column email set not null;
+
+// DropConstraint 
+alter table employee 
+alter column email drop not null;
+
+// SetDefaultValue
+insert into employee (user_name, age, email) 
+values ('ratul', 25, 'ratul@email.com');
+
+alter table employee 
+alter column email set default 'test@email.com';
+
+// RemoveDefaultValue
+alter table employee 
+alter column email drop default;
+
+// AddConstraint (table level constraint) 
+alter table employee 
+add constraint unique_employee_email unique(email);
+
+alter table employee 
+add constraint pk_employee_id primary key;
+
+// DropConstraint (table level constraint)
+alter table employee 
+drop constraint unique_employee_email;

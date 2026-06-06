@@ -1,0 +1,30 @@
+// ComparisonOperators
+
+//? Select students older than 20
+select * from students 
+where age < 20;
+
+//? Select all the students except Egypt
+select first_name, country_code from students 
+where country_code != 'Egypt';
+
+select first_name, country_code from students 
+where country_code <> 'Egypt';
+
+//? Select students whose age is between 20 and 22
+select first_name, age from students 
+where age between 20 and 22;
+
+//? Select unique age from students
+select distinct age from students;
+
+//? Select students enrolled in 'Computer Science', 'Data Science' or 'Software Engineering'
+select first_name, course from students 
+where course = 'Computer Science' or course = 'Data Science' or course = 'Software Engineering';
+
+select first_name, course from students 
+where course in ('Computer Science', 'Data Science', 'Software Engineering');
+
+//? Select students from USA or UK
+select first_name, country_code from students
+where country_code in ('United States', 'United Kingdom');

@@ -1,0 +1,324 @@
+- SELECT:
+  - GROUP
+  - ORDER
+  - HAVING
+  - JOIN
+  - FROM
+  - DISTINCT
+  - LIMIT
+  - SELECT
+  - OFFSET
+  - WHERE
+
+// CreateTable 
+CREATE TABLE students ( 
+  student_id SERIAL PRIMARY KEY,
+  first_name VARCHAR(50) not null, 
+  last_name VARCHAR(50) not null, 
+  age INT, 
+  grade CHAR(2), 
+  course VARCHAR(50), 
+  email VARCHAR(100) unique, 
+  dob DATE, 
+  blood_group VARCHAR(5), 
+  country_code VARCHAR(50) 
+  );
+
+// InsertData 
+INSERT INTO students ( 
+  first_name, 
+  last_name, 
+  age, 
+  grade, 
+  course,
+  email, 
+  dob, 
+  blood_group, 
+  country_code) 
+  VALUES ( 
+    'Liam', 
+    'Smith', 
+    20, 
+    'A',
+    'Computer Science', 
+    'liam.smith@email.com', 
+    '2006-03-14', 
+    'O+', 
+    'United Kingdom'
+  ), 
+  ( 
+    'Noah', 
+    'Johnson', 
+    21, 
+    'B+', 
+    'Information Technology', 
+    'noah.j@email.com',
+    '2005-07-22', 
+    'A-', 
+    'United States' 
+  ), 
+  ( 
+    'Oliver', 
+    'Williams', 
+    22, 
+    'A-',
+    'Software Engineering', 
+    'oliver.w@email.com', 
+    '2004-11-05', 
+    'B+', 
+    'Canada' 
+  ), 
+  (
+  'Elijah', 
+  'Brown', 
+  19, 
+  'O+', 
+  'Data Science', 
+  'elijah.b@email.com', 
+  '2007-01-18',
+  'O-', 
+  'Australia' 
+  ), 
+  ( 
+  'James', 
+  'Jones', 
+  23, 
+  'B', 
+  'Cyber Security',
+  'james.jones@email.com', 
+  '2003-05-30', 
+  'AB+', 
+  'New Zealand' 
+  ), 
+  ( 
+  'William',
+  'Garcia', 
+  20, 
+  'A+', 
+  'Computer Science', 
+  'w.garcia@email.com', 
+  '2006-09-12',
+  'A+', 
+  'Spain' 
+  ), 
+  ( 
+  'Benjamin', 
+  'Miller', 
+  21, 
+  'B-', 
+  'Artificial Intelligence',
+  'ben.miller@email.com', 
+  '2005-02-24', 
+  'B-', 
+  'Germany' 
+  ), 
+  ( 
+  'Lucas', 
+  'Davis', 
+  24,
+  'A', 
+  'Information Technology', 
+  'lucas.d@email.com', 
+  '2002-10-08', 
+  'O+', 
+  'France'
+  ), 
+  ( 
+  'Henry', 
+  'Rodriguez', 
+  22, 
+  'B+', 
+  'Software Engineering',
+  'henry.r@email.com', 
+  '2004-04-17', 
+  'A-', 
+  'Mexico' 
+  ), 
+  ( 
+  'Alexander', 
+  'Martinez',
+  20, 
+  'A-', 
+  'Data Science', 
+  'alex.m@email.com', 
+  '2006-12-01', 
+  'AB-', 
+  'Argentina'
+  ), 
+  ( 
+  'Mia', 
+  'Hernandez', 
+  19, 
+  'O+', 
+  'Cyber Security', 
+  'mia.h@email.com',
+  '2007-06-14', 
+  'O+', 
+  'Colombia' 
+  ), 
+  ( 
+  'Olivia', 
+  'Lopez', 
+  23, 
+  'B', 
+  'Computer Science', 
+  'olivia.l@email.com', 
+  '2003-08-29', 
+  'B+', 
+  'United Arab Emirates' 
+  ), 
+  (
+  'Emma', 
+  'Gonzalez', 
+  21, 
+  'A+', 
+  'Information Technology', 
+  'emma.g@email.com',
+  '2005-11-11', 
+  'A+', 
+  'Saudi Arabia' 
+  ), 
+  ( 
+  'Ava', 
+  'Wilson', 
+  22, 
+  'B-', 
+  'Software Engineering', 
+  'ava.wilson@email.com', 
+  '2004-01-25', 
+  'O-', 
+  'South Africa'
+  ), 
+  (
+  'Charlotte', 
+  'Anderson', 
+  20, 
+  'A', 
+  'Artificial Intelligence',
+  'charlotte.a@email.com', 
+  '2006-05-09', 
+  'AB+', 
+  'Singapore' 
+  ), 
+  ( 
+  Amelia',
+  'Thomas', 
+  25, 
+  'O+', 
+  'Data Science', 
+  'amelia.t@email.com', 
+  '2001-07-07', 
+  'B-',
+  'Malaysia' 
+  ), 
+  ( 
+  'Sophia', 
+  'Taylor', 
+  19, 
+  'B+', 
+  'Cyber Security',
+  'sophia.tay@email.com',   
+  '2007-03-21', 
+  'A-', 
+  'India' 
+  ), 
+  ( 
+  'Isabella', 
+  'Moore',
+  21, 
+  'A-', 
+  'Computer Science', 
+  'isabella.m@email.com', 
+  '2005-09-30', 
+  'O+',
+  'Japan' 
+  ), 
+  ( 
+  'Mia', 
+  'Jackson', 
+  24, 
+  'B', 
+  'Information Technology',
+  'mia.j@email.com', 
+  '2002-12-15', 
+  'B+', 
+  'South Korea' 
+  ), 
+  ( 
+  'Evelyn', 
+  'Martin',
+  22, 
+  'A+', 
+  'Software Engineering', 
+  'evelyn.m@email.com', 
+  '2004-02-03', 
+  'A+',
+  'Ireland' 
+  ), 
+  ( 
+  'Harper', 
+  'Lee', 
+  20, 
+  'B-', 
+  'Artificial Intelligence',
+  'harper.lee@email.com', 
+  '2006-08-19', 
+  'AB-', 
+  'China' 
+  ), 
+  ( 
+  'Camila', 
+  'Perez', 
+  23,
+  'A', 
+  'Data Science', 
+  'camila.p@email.com', 
+  '2003-10-22', 
+  'O-', 
+  'Brazil' 
+  ), 
+  (
+  'Gianna', 
+  'Thompson', 
+  21, 
+  'B+', 
+  'Cyber Security', 
+  'gianna.t@email.com',
+  '2005-04-11', 
+  'B+', 
+  'Jamaica' 
+  ), 
+  ( 
+  'Luna', 
+  'White', 
+  19, 
+  'A-', 
+  'Computer Science', 
+  'luna.w@email.com', 
+  '2007-11-28', 
+  'A-', 
+  'Egypt' 
+  ), 
+  ( 
+  'Ella',
+  'Sanchez', 
+  22, 
+  'O+', 
+  'Information Technology', 
+  'ella.s@email.com', 
+  '2004-06-05',
+  'O+', 
+  'Turkey' 
+  );
+
+// Using SELECT
+select first_name, age from students;
+
+select * from students;
+
+// ColumnAlias
+select first_name as "First Name", age as user_age from students;
+
+// Sorting
+select first_name, blood_group, country_code, age from students
+order by student_id desc;

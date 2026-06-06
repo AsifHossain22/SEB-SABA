@@ -1,0 +1,4 @@
+// CreateDatabase
+create database online_book_store
+
+// CreateTable

@@ -1,6 +1,0 @@
--- Distinct - Unique values: select distinct course from students;
-
--- Filtering -- Select students with A grade in Computer Science: select
-first_name, age, course, grade from students where grade = 'A';
-
-select \* from students where grade = 'A';

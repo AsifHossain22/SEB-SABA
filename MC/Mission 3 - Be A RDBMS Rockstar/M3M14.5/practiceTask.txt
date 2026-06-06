@@ -354,4 +354,8 @@ where title like 'The%';
 alter table customers
 rename column first_name to customer_first_name;
 
+//? 5. Find all books in the Fantasy genre
+select title, author, genre, price, publication_year from books
+where genre = 'Fantasy';
+
 

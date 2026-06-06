@@ -343,6 +343,7 @@ values
 select title, price from books
 order by price asc;
 
-
+//? 2. Find all distinct countries where customers are from
+select distinct country from customers;
 
 

@@ -350,4 +350,8 @@ select distinct country from customers;
 select title, author, price, publication_year from books
 where title like 'The%';
 
+//? 4. Change the column name first_name to customer_first_name in the customers table
+alter table customers
+rename column first_name to customer_first_name;
+
 

@@ -379,14 +379,30 @@ select customer_first_name, email, country from customers
 where (email like '%.com') and (country = 'USA' or country = 'UK');
 
 //? 9. Display all customers with their full name in uppercase (concatenated first and last name), original email, and city in lowercase.
+//? Only show customers from USA or UK.
 alter table customers
 rename column last_name to customer_last_name;
 
 select
   concat(customer_first_name, customer_last_name) as customer_full_name,
   email,
+  country,
   lower(city)
 from
-  customers;
+  customers
+where (country = 'USA' or country = 'UK');
+
+//? 10. Find the total revenue, average order amount, maximum order amount, and minimum order amount from all orders placed in June 2023.
+select
+  order_date,
+  sum(total_amount) as total_revenue,
+  avg(total_amount) as average_order_amount,
+  max(total_amount) as maximum_order_amount,
+  min(total_amount) as minimum_order_amount
+from orders
+where order_date >= '2023-06-01' 
+  and order_date <= '2023-06-30'
+group by order_date
+order by order_date asc;
 
 

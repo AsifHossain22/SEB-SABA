@@ -361,4 +361,17 @@ where genre = 'Fantasy';
 //? 6. Count the total number of orders in the database
 select count(*) from orders;
 
+//? 7. Find the average price of books by genre, but only show genres with an average price greater than $14
+select
+  title,
+  genre,
+  avg(price) as average_price_of_books
+from
+  books
+group by
+  title,
+  genre
+having
+  avg(price) > 14;
+
 

@@ -346,4 +346,8 @@ order by price asc;
 //? 2. Find all distinct countries where customers are from
 select distinct country from customers;
 
+//? 3. Find all books whose titles start with "The"
+select title, author, price, publication_year from books
+where title like 'The%';
+
 

@@ -374,4 +374,8 @@ group by
 having
   avg(price) > 14;
 
+//? 8. Find all customers whose email addresses end with .com and are from either USA or UK
+select customer_first_name, email, country from customers
+where (email like '%.com') and (country = 'USA' or country = 'UK');
+
 

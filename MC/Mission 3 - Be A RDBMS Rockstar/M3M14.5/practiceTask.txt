@@ -358,4 +358,7 @@ rename column first_name to customer_first_name;
 select title, author, genre, price, publication_year from books
 where genre = 'Fantasy';
 
+//? 6. Count the total number of orders in the database
+select count(*) from orders;
+
 

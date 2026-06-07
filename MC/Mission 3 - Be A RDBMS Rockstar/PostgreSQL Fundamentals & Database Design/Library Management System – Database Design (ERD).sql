@@ -1,3 +1,4 @@
+# Creations & Insertions
 -- CreateDatabase 
 create database library_management_system;
 
@@ -7,13 +8,16 @@ drop database database_name;
 -- CreateTable
 create table books (
   id serial primary key,
-  title varchar(255) not null,
-  author varchar(255) not null,
+  title varchar(100) not null,
+  author varchar(100) not null,
   isbn bigint unique,
-  book_category varchar(50) not null,
-  rating smallint check (rating <= 5),
-  price numeric(8, 2) check (price > 0),
-  isAvailable boolean default true,
+  book_category varchar(50),
+  price numeric(8, 2),
+  pages int,
+  rating decimal(2, 1),
+  stock smallint,
+  is_available boolean,
+  published_date date,
   tags text[],
   metadata jsonb
 );
@@ -28,24 +32,30 @@ insert into
     author,
     isbn,
     book_category,
-    rating,
     price,
+    pages,
+    rating,
+    stock,
+    is_available,
+    published_date,
     tags,
     metadata
   )
 values
   (
-    1,
-    'Book 1',
-    'Author 1',
-    '1234567',
-    'Category 1',
-    4,
-    500,
-    array['English', 'Mathematics', 'Programming'],
-    '{"page" : "1500", "bio" : "Boook1Bio"}'
+    'Clean Code',
+    'Robert Martin',
+    1001,
+    'Programming',
+    850.00,
+    474,
+    4.8,
+    10,
+    true,
+    '2008-08-01',
+    ARRAY['coding', 'best-practice'],
+    '{"publisher":"Prentice Hall","language":"EN", "format":"hardcover"}'
   )
-
   -- InsertMultipleRecords
   -- InsertRecordUsingDefaultAutoIncrementID
 insert into
@@ -54,111 +64,295 @@ insert into
     author,
     isbn,
     book_category,
-    rating,
     price,
+    pages,
+    rating,
+    stock,
+    is_available,
+    published_date,
     tags,
     metadata
   )
 values
   (
-    'The Silent Echo',
-    'Eleanor Vance',
-    '9876543',
-    'Mystery',
+    'Clean Code',
+    'Robert Martin',
+    1001,
+    'Programming',
+    850.00,
+    474,
+    4.8,
+    10,
+    true,
+    '2008-08-01',
+    ARRAY['coding', 'best-practice'],
+    '{"publisher":"Prentice Hall","language":"EN", "format":"hardcover"}'
+  ),
+  (
+    'The Pragmatic Programmer',
+    'Andrew Hunt',
+    1002,
+    'Programming',
+    900.00,
+    352,
+    4.9,
+    15,
+    true,
+    '1999-10-30',
+    ARRAY['career', 'software-engineering'],
+    '{"publisher": "Addison-Wesley", "language": "EN", "format": "hardcover"}'
+  ),
+  (
+    'Introduction to Algorithms',
+    'Thomas Cormen',
+    1003,
+    'Computer Science',
+    1200.00,
+    1312,
+    4.7,
     5,
-    340,
-    ARRAY['Fiction', 'Suspense', 'Thriller'],
-    '{"page": "340", "bio": "A gripping psychological thriller set in modern London."}'
+    true,
+    '2009-07-31',
+    ARRAY['algorithms', 'data-structures'],
+    '{"publisher": "MIT Press", "language": "EN", "format": "hardcover"}'
   ),
   (
-    'Quantum Horizons',
-    'Dr. Aris Thorne',
-    '4561237',
-    'Science',
-    4,
-    520,
-    ARRAY['Physics', 'Quantum Mechanics', 'Non-Fiction'],
-    '{"page": "520", "bio": "An accessible dive into the anomalies of quantum physics."}'
+    'Design Patterns',
+    'Erich Gamma',
+    1004,
+    'Programming',
+    950.00,
+    395,
+    4.8,
+    8,
+    true,
+    '1994-10-21',
+    ARRAY['oop', 'architecture'],
+    '{"publisher": "Addison-Wesley", "language": "EN", "format": "paperback"}'
   ),
   (
-    'Pythonic Mastery',
-    'Code Smith',
-    '3216549',
-    'Technology',
-    5,
-    410,
-    ARRAY['Programming', 'Python', 'Software Engineering'],
-    '{"page": "410", "bio": "Advanced design patterns and optimization techniques for Python."}'
+    'You Don''t Know JS Yet',
+    'Kyle Simpson',
+    1005,
+    'Web Development',
+    350.00,
+    150,
+    4.6,
+    25,
+    true,
+    '2020-01-25',
+    ARRAY['javascript', 'frontend'],
+    '{"publisher": "O''Reilly", "language": "EN", "format": "paperback"}'
   ),
   (
-    'Shadows of the Empire',
-    'J. R. Thorne',
-    '8529631',
-    'Fantasy',
-    3,
-    680,
-    ARRAY['Fiction', 'Epic Fantasy', 'World Building'],
-    '{"page": "680", "bio": "Book one of the acclaimed high-fantasy trilogy."}'
+    'Designing Data-Intensive Applications',
+    'Martin Kleppmann',
+    1006,
+    'System Design',
+    1100.00,
+    611,
+    4.9,
+    12,
+    true,
+    '2017-03-16',
+    ARRAY['databases', 'distributed-systems'],
+    '{"publisher": "O''Reilly", "language": "EN", "format": "paperback"}'
   ),
   (
-    'The Wealth Mindset',
-    'Sarah Jenkins',
-    '1593574',
-    'Finance',
-    4,
-    290,
-    ARRAY['Economics', 'Personal Finance', 'Self-Help'],
-    '{"page": "290", "bio": "Practical strategies for long-term wealth accumulation."}'
+    'Refactoring',
+    'Martin Fowler',
+    1007,
+    'Programming',
+    880.00,
+    448,
+    4.8,
+    0,
+    false,
+    '2018-11-19',
+    ARRAY['coding', 'quality'],
+    '{"publisher": "Addison-Wesley", "language": "EN", "format": "hardcover"}'
   ),
   (
-    'Calculus Unlocked',
-    'Prof. Alan Turing',
-    '7531598',
-    'Mathematics',
-    5,
-    450,
-    ARRAY['Mathematics', 'Calculus', 'Education'],
-    '{"page": "450", "bio": "A comprehensive guide from limits to multi-variable integration."}'
+    'The Lean Startup',
+    'Eric Ries',
+    1008,
+    'Business',
+    600.00,
+    336,
+    4.5,
+    30,
+    true,
+    '2011-09-13',
+    ARRAY['startup', 'management'],
+    '{"publisher": "Crown Business", "language": "EN", "format": "hardcover"}'
   ),
   (
-    'Baking with Science',
-    'Chef Chloe',
-    '2584561',
-    'Culinary',
-    4,
-    210,
-    ARRAY['Cooking', 'Baking', 'Food Chemistry'],
-    '{"page": "210", "bio": "Understanding the chemical reactions behind perfect pastries."}'
+    'Atomic Habits',
+    'James Clear',
+    1009,
+    'Self-Help',
+    550.00,
+    320,
+    4.9,
+    50,
+    true,
+    '2018-10-16',
+    ARRAY['productivity', 'psychology'],
+    '{"publisher": "Penguin", "language": "EN", "format": "paperback"}'
   ),
   (
-    'Ancient Echoes',
-    'Marcus Aurelius',
-    '6547893',
+    'Sapiens',
+    'Yuval Noah Harari',
+    1010,
     'History',
+    650.00,
+    512,
+    4.7,
+    18,
+    true,
+    '2014-09-04',
+    ARRAY['history', 'anthropology'],
+    '{"publisher": "Harper", "language": "EN", "format": "paperback"}'
+  ),
+  (
+    'Deep Work',
+    'Cal Newport',
+    1011,
+    'Self-Help',
+    500.00,
+    304,
+    4.6,
+    14,
+    true,
+    '2016-01-05',
+    ARRAY['focus', 'productivity'],
+    '{"publisher": "Grand Central", "language": "EN", "format": "hardcover"}'
+  ),
+  (
+    'Head First Design Patterns',
+    'Eric Freeman',
+    1012,
+    'Programming',
+    800.00,
+    694,
+    4.7,
+    7,
+    true,
+    '2004-10-25',
+    ARRAY['oop', 'beginners'],
+    '{"publisher": "O''Reilly", "language": "EN", "format": "paperback"}'
+  ),
+  (
+    'Cracking the Coding Interview',
+    'Gayle Laakmann McDowell',
+    1013,
+    'Career',
+    999.00,
+    687,
+    4.8,
+    22,
+    true,
+    '2015-07-01',
+    ARRAY['interview', 'algorithms'],
+    '{"publisher": "CareerCup", "language": "EN", "format": "paperback"}'
+  ),
+  (
+    'The Mythical Man-Month',
+    'Fred Brooks',
+    1014,
+    'Software Engineering',
+    750.00,
+    322,
+    4.5,
     4,
-    380,
-    ARRAY['Non-Fiction', 'Roman History', 'Philosophy'],
-    '{"page": "380", "bio": "An in-depth look at daily life during the height of the Roman Empire."}'
+    true,
+    '1975-01-01',
+    ARRAY['management', 'history'],
+    '{"publisher": "Addison-Wesley", "language": "EN", "format": "paperback"}'
   ),
   (
-    'Data Structures & Algorithms',
-    'Linus Torvalds',
-    '1472583',
-    'Technology',
-    5,
-    590,
-    ARRAY['Computer Science', 'Programming', 'Algorithms'],
-    '{"page": "590", "bio": "The essential handbook for interview preparation and problem solving."}'
+    'Python Crash Course',
+    'Eric Matthes',
+    1015,
+    'Programming',
+    700.00,
+    544,
+    4.7,
+    0,
+    false,
+    '2019-05-03',
+    ARRAY['python', 'beginners'],
+    '{"publisher": "No Starch Press", "language": "EN", "format": "paperback"}'
   ),
   (
-    'The Art of Minimalism',
-    'Marie Kondo',
-    '3692581',
-    'Lifestyle',
-    3,
-    180,
-    ARRAY['Self-Help', 'Organization', 'Minimalism'],
-    '{"page": "180", "bio": "Decluttering your digital and physical space for maximum focus."}'
+    'The Phoenix Project',
+    'Gene Kim',
+    1016,
+    'DevOps',
+    680.00,
+    382,
+    4.7,
+    11,
+    true,
+    '2013-01-10',
+    ARRAY['devops', 'fiction'],
+    '{"publisher": "IT Revolution Press", "language": "EN", "format": "hardcover"}'
+  ),
+  (
+    'Continuous Delivery',
+    'Jez Humble',
+    1017,
+    'DevOps',
+    920.00,
+    496,
+    4.6,
+    6,
+    true,
+    '2010-07-27',
+    ARRAY['ci-cd', 'automation'],
+    '{"publisher": "Addison-Wesley", "language": "EN", "format": "hardcover"}'
+  ),
+  (
+    'Zero to One',
+    'Peter Thiel',
+    1018,
+    'Business',
+    580.00,
+    224,
+    4.5,
+    40,
+    true,
+    '2014-09-16',
+    ARRAY['startup', 'strategy'],
+    '{"publisher": "Crown Business", "language": "EN", "format": "hardcover"}'
+  ),
+  (
+    'Thinking, Fast and Slow',
+    'Daniel Kahneman',
+    1019,
+    'Psychology',
+    620.00,
+    499,
+    4.6,
+    15,
+    true,
+    '2011-10-25',
+    ARRAY['psychology', 'decision-making'],
+    '{"publisher": "Farrar, Straus and Giroux", "language": "EN", "format": "paperback"}'
+  ),
+  (
+    'Domain-Driven Design',
+    'Eric Evans',
+    1020,
+    'System Design',
+    1050.00,
+    560,
+    4.6,
+    9,
+    true,
+    '2003-08-30',
+    ARRAY['ddd', 'architecture'],
+    '{"publisher": "Addison-Wesley", "language": "EN", "format": "hardcover"}'
   );
 
 -- ViewAllRecords
@@ -166,3 +360,73 @@ select
   *
 from
   books;
+
+-- UsingColumnAlias
+select title as book_title from books;
+
+select title as "Title Of Books", price as "Price Of Books" from books;
+
+# Alter
+
+-- RenameTable
+alter table book
+rename to books;
+
+-- AddColumn
+alter table books
+add column publishingDate date;
+
+-- DropColumn
+alter table books
+drop column rating;
+
+-- RenameColumn
+alter table books
+rename column book_category to categories;
+
+-- ChangeDataType
+alter table books
+alter column price type int using price::int;
+
+alter table books
+alter column price type text;
+
+-- TypeCasting
+alter table books
+alter column price type int using price::int;
+
+-- SetDefaultValue
+alter table books
+alter column publishingDate
+set default current_date;
+
+-- DropDefaultValue
+alter table books
+alter column publishingDate
+drop default;
+
+-- SetNotNullConstraint
+alter table books
+alter column categories
+set not null;
+
+-- DropNotNullConstraint
+alter table books
+alter column categories
+drop not null;
+
+-- AddUniqueConstraint
+alter table books
+add constraint title_unique unique (title);
+
+-- DropUniqueConstraint
+alter table books
+drop constraint title_unique;
+
+-- AddPrimaryKeyConstraint
+alter table books
+add constraint id_primary primary key (id);
+
+-- DropPrimaryKeyConstraint
+alter table books
+drop constraint id_primary;

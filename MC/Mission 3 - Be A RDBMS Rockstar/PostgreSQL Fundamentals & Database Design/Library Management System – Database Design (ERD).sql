@@ -430,3 +430,90 @@ add constraint id_primary primary key (id);
 -- DropPrimaryKeyConstraint
 alter table books
 drop constraint id_primary;
+
+# Select
+  -- SortBooksByPrice (Descending)
+select
+  title as "Title Of Books",
+  price as "Price Of Books"
+from
+  books
+order by
+  price desc;
+
+-- SelectUniqueCategories (Distinct)
+select distinct
+  book_category
+from
+  books;
+
+-- FilterBooksUsingWHEREClause
+-- FilterUsingEqual (=) Operator
+select
+  *
+from
+  books
+where
+  book_category = 'Computer Science';
+
+-- SelectAvailableBooks
+select
+  *
+from
+  books
+where
+  is_available = true;
+
+-- FilterUsingOROperator
+select
+  *
+from
+  books
+where
+  book_category = 'Computer Science'
+  or book_category = 'Programming';
+
+-- FilterUsing AND, OR and ComparisonOperators
+select
+  *
+from
+  books
+where
+  (
+    book_category = 'Computer Science'
+    or book_category = 'Programming'
+    or book_category = 'System Design'
+  )
+  and (price > 1000);
+
+-- FilterUsingBETWEENOperator
+select
+  *
+from
+  books
+where
+  pages between 500 and 700;
+
+-- FilterUsingINOperator
+select
+  *
+from
+  books
+where
+  book_category in ('Computer Science', 'System Design');
+
+-- FilterFromArray
+select
+  *
+from
+  books
+where
+  'data-structures' = any (tags);
+
+-- FilterFromJsonb
+select
+  *
+from
+  books
+where
+  metadata ->> 'format' = 'paperback';

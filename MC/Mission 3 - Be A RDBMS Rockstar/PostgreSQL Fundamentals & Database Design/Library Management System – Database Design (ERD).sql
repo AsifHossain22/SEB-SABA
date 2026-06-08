@@ -517,3 +517,92 @@ from
   books
 where
   metadata ->> 'format' = 'paperback';
+
+# Like & ILike
+-- FilterDataUsingLIKEOperator
+select
+  *
+from
+  books
+where
+  title like 'T%';
+
+-- FilterDataUsingLIKEWithFixedCharacterLenght
+select
+  *
+from
+  books
+where
+  author like 'A__________';
+
+-- FilterDataUsingILikeOperator (Case Insensitive)
+select
+  *
+from
+  books
+where
+  author ilike 'e%'
+  or author ilike 'E%';
+
+# ScalarFunctions
+-- UpperFunction 
+select
+  upper(title) as "Books Title"
+from
+  books;
+
+-- LowerFunction
+select
+  lower(title) as "Books Title"
+from
+  books;
+
+-- ConcatFunction
+select
+  concat(title, ' ', author) as "Books Title & Author Name"
+from
+  books;
+
+-- LengthFunction
+select
+  title,
+  length(title) as "Books Title Length"
+from
+  books;
+
+# AggregateFunctions
+-- AverageFunction
+select
+  avg(pages)
+from
+  books;
+
+-- MaximumFunction
+select
+  max(pages)
+from
+  books;
+
+-- MinimumFunction
+select
+  min(pages)
+from
+  books;
+
+-- SumFunction
+select
+  sum(price)
+from
+  books;
+
+-- CountFunction (count non-null values)
+select
+  count(price)
+from
+  books;
+
+-- CountAllRows
+select
+  count(*)
+from
+  books;

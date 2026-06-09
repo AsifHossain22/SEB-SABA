@@ -1,9 +1,9 @@
-// CreateDatabase
+-- CreateDatabase
 create database online_book_store
 
-//? TABLE 1: customers
+-- TABLE 1: customers
 
-// CreateTable
+-- CreateTable
 create table customers (
   customer_id int primary key,
   first_name varchar(50) not null,
@@ -14,12 +14,12 @@ create table customers (
   registration_date date
 );
 
-// SetAlter
+-- SetAlter
 alter table customers
 alter column registration_date
 set not null;
 
-// InsertData
+-- InsertData
 insert into
   customers (
     customer_id,
@@ -122,9 +122,9 @@ values
     '2023-03-30'
   );
 
-  //? Table 2: books
+-- Table 2: books
 
-  // CreateTable
+-- CreateTable
 create table books (
   book_id int primary key,
   title varchar(200) not null,
@@ -135,14 +135,14 @@ create table books (
   stock_quantity int
 );
 
-// SetAlter
+-- SetAlter
 alter table books
 alter column price
 set not null,
 alter column stock_quantity
 set not null;
 
-// InsertData
+-- InsertData
 insert into
   books (
     book_id,
@@ -281,9 +281,9 @@ values
     35
   );
 
-//? Table 3: orders
+-- Table 3: orders
 
-// CreateTable
+-- CreateTable
 create table orders (
   order_id int primary key,
   customer_id int,
@@ -295,7 +295,7 @@ create table orders (
   total_amount decimal(10, 2)
 );
 
-// SetAlter
+-- SetAlter
 alter table orders
 alter column customer_id
 set not null,
@@ -306,7 +306,7 @@ set not null,
 alter column total_amount
 set not null;
 
-//InsertData
+-- InsertData
 insert into
   orders (
     order_id,
@@ -337,31 +337,31 @@ values
   (18, 7, 3, ' 2023-06-08', 2, '27.98');
 
 
-// Practice Tasks:
+-- # Practice Tasks #
 
-//? 1. Display all books with their titles and prices, ordered by price (lowest to highest)
+-- 1. Display all books with their titles and prices, ordered by price (lowest to highest)
 select title, price from books
 order by price asc;
 
-//? 2. Find all distinct countries where customers are from
+-- 2. Find all distinct countries where customers are from
 select distinct country from customers;
 
-//? 3. Find all books whose titles start with "The"
+-- 3. Find all books whose titles start with "The"
 select title, author, price, publication_year from books
 where title like 'The%';
 
-//? 4. Change the column name first_name to customer_first_name in the customers table
+-- 4. Change the column name first_name to customer_first_name in the customers table
 alter table customers
 rename column first_name to customer_first_name;
 
-//? 5. Find all books in the Fantasy genre
+-- 5. Find all books in the Fantasy genre
 select title, author, genre, price, publication_year from books
 where genre = 'Fantasy';
 
-//? 6. Count the total number of orders in the database
+-- 6. Count the total number of orders in the database
 select count(*) from orders;
 
-//? 7. Find the average price of books by genre, but only show genres with an average price greater than $14
+-- 7. Find the average price of books by genre, but only show genres with an average price greater than $14
 select
   title,
   genre,
@@ -374,12 +374,11 @@ group by
 having
   avg(price) > 14;
 
-//? 8. Find all customers whose email addresses end with .com and are from either USA or UK
+-- 8. Find all customers whose email addresses end with .com and are from either USA or UK
 select customer_first_name, email, country from customers
 where (email like '%.com') and (country = 'USA' or country = 'UK');
 
-//? 9. Display all customers with their full name in uppercase (concatenated first and last name), original email, and city in lowercase.
-//? Only show customers from USA or UK.
+-- 9. Display all customers with their full name in uppercase (concatenated first and last name), original email, and city in lowercase. Only show customers from USA or UK.
 alter table customers
 rename column last_name to customer_last_name;
 
@@ -392,7 +391,7 @@ from
   customers
 where (country = 'USA' or country = 'UK');
 
-//? 10. Find the total revenue, average order amount, maximum order amount, and minimum order amount from all orders placed in June 2023.
+-- 10. Find the total revenue, average order amount, maximum order amount, and minimum order amount from all orders placed in June 2023.
 select
   order_date,
   sum(total_amount) as total_revenue,
@@ -404,5 +403,3 @@ where order_date >= '2023-06-01'
   and order_date <= '2023-06-30'
 group by order_date
 order by order_date asc;
-
-

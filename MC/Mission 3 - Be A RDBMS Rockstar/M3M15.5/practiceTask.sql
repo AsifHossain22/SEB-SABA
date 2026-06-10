@@ -314,3 +314,18 @@ SET
   price = price * 1.10
 WHERE
   category = 'Programming';
+
+-- 5. Delete all enrollment records where progress_percentage is NULL.
+DELETE FROM enrollments
+WHERE
+  progress_percentage IS NULL;
+
+-- 6. Find the total paid amount per course category using GROUP BY.
+SELECT
+  category,
+  SUM(paid_amount) AS total_amount
+FROM
+  enrollments AS e
+  INNER JOIN courses AS c ON e.course_id = c.course_id
+GROUP BY
+  category;

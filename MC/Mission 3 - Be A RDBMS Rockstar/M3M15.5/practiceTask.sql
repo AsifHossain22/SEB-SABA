@@ -275,3 +275,23 @@ SELECT
   *
 FROM
   enrollments;
+
+-- # PRACTICE QUESTIONS #
+
+-- 1. Display all students and their phone numbers. If the phone number is NULL, show 'Not Provided' using COALESCE.
+SELECT
+  first_name,
+  last_name,
+  COALESCE(phone, 'Not Provided') as phone
+FROM
+  students;
+
+-- 2. Show all courses ordered by price (highest to lowest) and limit the result to 5 courses.
+SELECT
+  *
+FROM
+  courses
+ORDER BY
+  price DESC
+LIMIT
+  5;

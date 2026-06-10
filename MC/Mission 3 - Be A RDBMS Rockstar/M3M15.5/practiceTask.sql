@@ -295,3 +295,22 @@ ORDER BY
   price DESC
 LIMIT
   5;
+
+-- 3. Display courses for page 2, assuming 3 courses per page, using LIMIT and OFFSET.
+SELECT
+  *
+FROM
+  courses
+ORDER BY
+  course_id
+LIMIT
+  3
+OFFSET
+  3;
+
+-- 4. Update the price of all courses in the Programming category by increasing it 10%.
+UPDATE courses
+SET
+  price = price * 1.10
+WHERE
+  category = 'Programming';

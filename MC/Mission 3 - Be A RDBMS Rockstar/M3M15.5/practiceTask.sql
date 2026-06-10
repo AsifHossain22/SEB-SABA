@@ -329,3 +329,27 @@ FROM
   INNER JOIN courses AS c ON e.course_id = c.course_id
 GROUP BY
   category;
+
+-- 7. Show course categories where the average course price is greater than 60 using HAVING.
+SELECT
+  course_title,
+  category,
+  AVG(price) AS average_price
+FROM
+  courses
+GROUP BY
+  course_title,
+  category
+HAVING
+  AVG(price) > 60;
+
+-- 8. Count how many students are enrolled in each course.
+SELECT
+  course_title,
+  COUNT(student_id) AS total_student
+FROM
+  courses AS c
+  LEFT JOIN enrollments AS e ON c.course_id = e.course_id
+GROUP BY
+  c.course_id,
+  c.course_title;

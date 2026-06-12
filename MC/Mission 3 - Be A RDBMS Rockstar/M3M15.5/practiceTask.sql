@@ -374,3 +374,21 @@ LEFT JOIN courses AS c ON e.course_id = c.course_id;
 SELECT s.first_name, s.last_name, c.course_title FROM enrollments AS e
 RIGHT JOIN students AS s ON e.student_id = s.student_id
 RIGHT JOIN courses AS c ON e.course_id = c.course_id;
+
+-- 13. Display all students and all courses, even if there is no matching enrollment, using a FULL JOIN.
+SELECT CONCAT(s.first_name, ' ', s.last_name) AS student_name,
+c.course_title
+FROM enrollments AS e
+FULL OUTER JOIN students AS s ON e.student_id = s.student_id
+FULL OUTER JOIN courses AS c ON e.course_id = c.course_id;
+
+-- 14. Show the number of enrollments per year based on enrollment_date.
+SELECT EXTRACT (YEAR FROM enrollment_date) AS enrollment_year,
+COUNT (enrollment_id) AS total_enrollments
+FROM enrollments
+GROUP BY EXTRACT (YEAR FROM enrollment_date);
+
+-- 15. Find the average progress percentage per course, ignoring NULL values.
+SELECT course_id, AVG(progress_percentage) AS average_progress
+FROM enrollments
+GROUP BY course_id;

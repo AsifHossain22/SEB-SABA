@@ -353,3 +353,14 @@ FROM
 GROUP BY
   c.course_id,
   c.course_title;
+
+-- 9. Explain what happens if you try to insert an enrollment with a student_id that does not exist in the students table.
+The DATABASE will throw a FOREIGN KEY Constraint Validation Error and reject the insert operation!
+
+-- 10. Display student full name, course title and paid amount using an INNER JOIN.
+SELECT CONCAT(s.first_name, ' ', s.last_name) AS student_name,
+c.course_title,
+e.paid_amount
+FROM enrollments AS e
+INNER JOIN students AS s ON e.student_id = s.student_id
+INNER JOIN courses AS c ON e.course_id = c.course_id;

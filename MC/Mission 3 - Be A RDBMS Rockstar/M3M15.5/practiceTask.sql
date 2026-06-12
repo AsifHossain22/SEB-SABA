@@ -365,4 +365,12 @@ FROM enrollments AS e
 INNER JOIN students AS s ON e.student_id = s.student_id
 INNER JOIN courses AS c ON e.course_id = c.course_id;
 
+-- 11. Display all students and their enrolled courses. Include students who have not enrolled in any course using a LEFT JOIN.
+SELECT s.first_name, s.last_name, c.course_title  FROM students AS s
+LEFT JOIN enrollments AS e ON s.student_id = e.student_id
+LEFT JOIN courses AS c ON e.course_id = c.course_id;
 
+-- 12. Display all courses and their enrolled students. Include courses that have no enrollments using a RIGHT JOIN.
+SELECT s.first_name, s.last_name, c.course_title FROM enrollments AS e
+RIGHT JOIN students AS s ON e.student_id = s.student_id
+RIGHT JOIN courses AS c ON e.course_id = c.course_id;

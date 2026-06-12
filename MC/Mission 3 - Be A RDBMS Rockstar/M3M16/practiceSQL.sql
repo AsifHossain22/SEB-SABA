@@ -85,3 +85,18 @@ SELECT
 FROM
   employees
   INNER JOIN departments USING (department_id);
+
+-- 2. Show Department Name with Average Salary:
+SELECT
+  department_name,
+  AVG(salary)
+FROM
+  employees
+  INNER JOIN departments USING (department_id)
+  GROUP BY department_name;
+
+-- 3. Count Employees in Each Department:
+SELECT department_name, COUNT(*) as total_employess
+FROM employees
+INNER JOIN departments USING (department_id)
+GROUP BY department_name;

@@ -364,3 +364,5 @@ e.paid_amount
 FROM enrollments AS e
 INNER JOIN students AS s ON e.student_id = s.student_id
 INNER JOIN courses AS c ON e.course_id = c.course_id;
+
+

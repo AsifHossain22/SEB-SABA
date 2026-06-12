@@ -96,7 +96,39 @@ FROM
   GROUP BY department_name;
 
 -- 3. Count Employees in Each Department:
-SELECT department_name, COUNT(*) as total_employess
-FROM employees
-INNER JOIN departments USING (department_id)
-GROUP BY department_name;
+SELECT
+  department_name,
+  COUNT(*) as total_employees
+FROM
+  employees
+  INNER JOIN departments USING (department_id)
+GROUP BY
+  department_name;
+
+-- 4. Find the Department name with the Highest Average Salary:
+SELECT
+  department_name,
+  round(AVG(salary)) AS average_salary
+FROM
+  employees
+  JOIN departments USING (department_id)
+GROUP BY
+  department_name
+ORDER BY
+  AVG(salary) DESC
+LIMIT
+  1;
+
+-- 5. Count Employees Hired Each Year:
+-- SELECT EXTRACT (YEAR FROM '2020-12-1'::DATE)
+SELECT
+  EXTRACT(
+    YEAR
+    FROM
+      hire_date
+  ) AS hired_year,
+  COUNT(*)
+FROM
+  employees
+GROUP BY
+  hired_year;

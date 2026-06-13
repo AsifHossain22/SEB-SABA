@@ -629,3 +629,38 @@ select
   coalesce(price, 0) as price
 from
   books;
+
+-- Limit
+select
+  *
+from
+  books
+limit
+  5;
+
+-- Offset
+select
+  *
+from
+  books
+offset
+  5;
+
+-- Pagination
+select
+  *
+from
+  books
+limit
+  5
+offset
+  5 * 0;
+
+select
+  *
+from
+  books
+limit
+  5
+offset
+  5 * 1;

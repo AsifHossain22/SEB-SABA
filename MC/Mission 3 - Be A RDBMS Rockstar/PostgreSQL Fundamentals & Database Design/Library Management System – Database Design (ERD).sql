@@ -664,3 +664,40 @@ limit
   5
 offset
   5 * 1;
+
+-- Group by
+select
+  book_category
+from
+  books
+group by
+  book_category;
+
+select
+  book_category,
+  sum(price * stock) as total
+from
+  books
+group by
+  book_category;
+
+-- Having
+select
+  book_category,
+  sum(price * stock) as total
+from
+  books
+group by
+  book_category
+having
+  sum(price * stock) is not null;
+
+select
+  book_category,
+  sum(price * stock) as total
+from
+  books
+group by
+  book_category
+having
+  sum(price * stock) > 10000;

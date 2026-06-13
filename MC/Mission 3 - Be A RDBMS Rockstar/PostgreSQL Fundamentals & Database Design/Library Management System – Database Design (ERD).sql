@@ -796,3 +796,10 @@ select
 from
   orders
   right join users on orders.user_id = users.id;
+
+-- NATURAL JOIN
+select
+  *
+from
+  users
+  natural join orders;

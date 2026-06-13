@@ -606,3 +606,26 @@ select
   count(*)
 from
   books;
+
+-- Find books where ISBN is NULL
+select
+  *
+from
+  books
+where
+  isbn is null;
+
+select
+  *
+from
+  books
+where
+  isbn is not null;
+
+-- COALESCE
+select
+  title,
+  coalesce(isbn, 0) as isbn,
+  coalesce(price, 0) as price
+from
+  books;

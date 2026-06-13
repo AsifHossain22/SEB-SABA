@@ -701,3 +701,26 @@ group by
   book_category
 having
   sum(price * stock) > 10000;
+
+-- Update 
+update books
+set
+  book_category = 'Web',
+  isbn = 2001,
+  price = 1500
+where
+  id = 16;
+
+update books
+set
+  book_category = case
+    when id = 8 then 'Build Career'
+    when id = 16 then 'Build Next Level Career'
+  end
+where
+  id in (8, 16);
+
+-- Delete
+delete from books
+where
+  id = 12;

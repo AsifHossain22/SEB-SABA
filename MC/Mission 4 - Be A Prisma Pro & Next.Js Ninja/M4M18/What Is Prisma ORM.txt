@@ -1,0 +1,42 @@
+//? What is PRISMA?
+
+The Modern Database Toolkit for Node.js
+
+Prisma is an open-source ORM (Object-Relational Mapper) that makes database access easy, type-safe and intuitive for modern JavaScript and Typescript applications.
+
+- Database Agnostic:
+  PostgreSQL, MySQL, SQLite, MongoDB, SQL Server & more
+
+- Type-Safe Queries:
+  Full autocomplete and compile-time error checking
+
+- Developer-First:
+  Readable schema, auto-generated migrations, great DX
+
+//? What is ORM?
+
+ORM stands for Object-Relational Mapping.
+
+It lets you talk to your database using JavaScript/Typescript objects instead of writing raw SQL queries.
+
+Example:
+
+- Without ORM (Raw SQL):
+  `
+  SELECT * FROM users
+  WHERE email = 'example@email.com'
+  AND age > 18
+  ORDER BY name ASC;
+  `
+
+- With Prisma ORM:
+  const users = await prima.users
+    .findMany(
+      {
+        where:{
+          email: 'example@email.com',
+          age: {gt:18}
+        },
+        orderBy: {name:'asc'}
+      }
+    )

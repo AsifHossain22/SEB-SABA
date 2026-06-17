@@ -1,0 +1,10 @@
+//? Why Choose Prisma?
+
+  - Type Safety
+  - Great DX 
+  - Data Integrity
+  - Auto-complete
+  - Flexible 
+  - Scalable
+
+

@@ -1,0 +1,16 @@
+//? The Three Core Tools
+
+  - Prisma Schema
+    - schema.prisma
+    - Data Models
+    - Relations
+
+  - Prisma Migrate
+    - Auto Migrations
+    - Version Control
+    - Safe Rollbacks
+
+  - Prisma Client 
+    - Type-Safe
+    - Auto-generated
+    - IntelliSense 

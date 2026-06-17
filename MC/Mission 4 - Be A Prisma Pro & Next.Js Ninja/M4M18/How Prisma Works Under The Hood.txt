@@ -1,0 +1,23 @@
+//? Common Prisma Terminology
+
+  - Model
+  - Schema
+  - Migration
+  - Relation
+  - Client
+  - Generator
+  - Datasource
+  - Seeding
+
+//? Prisma Workflow
+
+  1. Define Schema
+    Write your models in schema.prisma
+  2. Run Migrate
+    Prisma creates your database tables
+  3. Generate Client
+    Prisma builds a typed client for you
+  4. Write Queries
+    Use prisma.model.method() in your app
+  5. Iterate
+    Change schema, migrate again, repeat

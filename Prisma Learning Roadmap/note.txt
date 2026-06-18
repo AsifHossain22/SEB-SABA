@@ -1,0 +1,35 @@
+# Prisma Learning Roadmap
+
+  1. Prisma Documentation Explore
+  2. Prisma Basics
+  3. Prisma Setup & DB connection (PostgreSQL)
+  4. Prisma Schema & Model Definition
+  5. Prisma DB migration & Prisma Client generation
+  6. DB Query with Prisma Client (create / read / update / delete)
+
+  7. Small Project (TS + Node-Express + Prisma-Postgres)
+
+- Setup:
+  1. Create project-folder
+  2. npm init -y
+    npm install typescript tsx @types/node --save-dev
+    npx tsc --init
+  3. npm install prisma @types/pg --save-dev
+  4. npm install @prisma/client @prisma/adapter-pg pg dotenv 
+  5. Update 'tsconfig.json' file following docs
+  6. Update 'package.json' file following docs 
+  7. npx prisma init --output ../generated/prisma
+  8. npx create-db
+  9. Connect DB using Connection String in '.env' file
+  10. Update 'tsconfig.json' file:
+      "types": ["node"],
+      "outDir": "dist",
+      "rootDir": "src"
+  11. Install Extension: Prisma - To show colorful code
+  12. ctrl + space = Prisma Type suggestion
+  13. Update 'schema.prisma' file following docs
+  14. 'npx prisma migrate dev' following docs
+  15. Terminal - Enter a name for new migration: first migration
+  16. Generate the Prisma Client following docs: npx prisma generate
+  17. Create a folder & file 'lib/prisma.ts' into 'src' and add code snippet following docs
+  18 Create a file 'script.ts' into 'src' and add code snippet following docs 

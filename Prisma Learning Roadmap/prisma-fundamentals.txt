@@ -1,0 +1,108 @@
+# Prisma Fundamentals — Detailed Explanation
+
+Q. What is Data Modeling?
+
+A. Definition:
+
+  - Data Modeling is the process of designing and organizing data before storing it in a database.
+
+  - Think of it as creating a blueprint for your database.
+
+  - Before building a house, architects create a blueprint.
+
+  - Before creating a database, developers create a data model.
+
+* Real-Life Example
+
+Imagine you're building an E-commerce Application.
+
+You need:
+
+Users
+Products
+Orders
+Categories
+
+A data model helps you decide:
+
+What information should be stored?
+How tables are connected?
+Which data is required?
+Which data is optional?
+
+Q. What is Prisma Schema?
+
+A. Prisma Schema is the main configuration file of Prisma.
+
+It Contains 3 Main Parts:
+  generator client {
+  }
+
+  datasource db {
+  }
+
+  model User {
+  }
+
+- Prisma Schema defines:
+
+  - Database connection
+  - Models
+  - Relationships
+  - Prisma Client generation
+
+Q. Data Sources, Generators, Schema Location in Prisma
+
+A. 
+  Datasource tells Prisma:
+
+    Which database should I connect to?
+  
+  Supported Databases:
+    PostgreSQL
+    MySQL
+    SQLite
+    SQL Server
+    MongoDB
+
+  Generator
+
+    Generator tells Prisma:
+      What code should be generated?
+  
+  Schema Location
+
+    Default Location:
+      prisma/schema.prisma
+    
+  Q. Defining Models in Prisma
+
+    What is a Model?
+      A Model represents a database table.
+
+  Q. Deep Dive Into Prisma Models and Defining Fields
+
+# Interview Summary (Must Remember):
+    - Data Modeling = Designing database structure before implementation.
+    - Prisma Schema = Main Prisma configuration file.
+    - Datasource = Database connection configuration.
+    - Generator = Generates Prisma Client.
+    - Model = Database table representation.
+    - Field = Column inside a table.
+    - @id = Primary Key.
+    - @unique = No duplicate values.
+    - @default() = Default value.
+    - @updatedAt = Auto-update timestamp.
+    - ? = Optional (nullable) field.
+
+    Data Modeling = Database ডিজাইন করার পরিকল্পনা।
+    Prisma Schema = Prisma-এর মূল Configuration File।
+    Datasource = Database Connection।
+    Generator = Prisma Client তৈরি করে।
+    Model = Database Table।
+    Field = Table-এর Column।
+    @id = Primary Key।
+    @unique = Duplicate Allow নয়।
+    @default() = Default Value।
+    @updatedAt = Automatically Update Time।
+    ? = Nullable Field।

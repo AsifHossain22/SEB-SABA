@@ -1,0 +1,309 @@
+# Prisma Deep Dive
+
+- Prisma Field Attributes:
+  Attribute               Meaning
+  @id	Primary             Key
+  @default()	            Default value
+  @unique	                Unique value
+  @updatedAt	            Auto update timestamp
+  @map	                  Map field name
+  @relation	              Create relation
+
+- Prisma Enums:
+  Enum means fixed set of values.
+
+Example:
+    enum Role {
+      USER
+      ADMIN
+      SUPER_ADMIN
+    }
+
+    Use in model:
+    model User {
+      id   Int @id @default(autoincrement())
+      role Role
+    }
+
+    Allowed:
+    USER
+    ADMIN
+    SUPER_ADMIN
+
+    Not allowed:
+    MANAGER
+
+# Composite Key
+  Composite Key = Multiple fields together form a Primary Key.
+
+  Instead of:
+    id Int @id
+
+  we use:
+    @@id([userId, courseId])
+
+  Example:
+    model Enrollment {
+      userId   Int
+      courseId Int
+
+      @@id([userId, courseId])
+    }
+
+  Meaning:
+    userId + courseId together must be unique.
+
+  Example Data
+    userId	courseId
+    1	101
+    1	102
+    2	101
+
+    Allowed.
+
+  But:
+    userId	courseId
+    1	101
+    1	101
+
+    Not allowed.
+
+# Model Relations In Prisma
+
+  - One-to-One Relation
+      One User → One Profile
+      1 User = 1 Profile
+
+      Example:
+
+        model User {
+          id      Int @id @default(autoincrement())
+          profile Profile?
+        }
+
+        model Profile {
+          id     Int @id @default(autoincrement())
+
+          userId Int @unique
+
+          user User @relation(fields:[userId], references:[id])
+        }
+
+      Visualization:
+        User 1 ---- 1 Profile
+
+  - One-to-Many Relation
+
+      One User can create many Posts.
+
+      1 User → Many Posts
+
+      Schema:
+
+        model User {
+          id Int @id @default(autoincrement())
+
+          posts Post[]
+        }
+
+        model Post {
+          id Int @id @default(autoincrement())
+
+          userId Int
+
+          user User @relation(fields:[userId], references:[id])
+        }
+
+      Visualization:
+
+        User
+          ├─ Post 1
+          ├─ Post 2
+          └─ Post 3
+
+  - Many-to-Many Relation
+
+      Students can join many courses.
+
+      Courses can have many students.
+
+      Student <-> Course
+
+      Example:
+
+        model Student {
+          id Int @id @default(autoincrement())
+
+          courses Course[]
+        }
+
+        model Course {
+          id Int @id @default(autoincrement())
+
+          students Student[]
+        }
+
+      Visualization
+
+        Student A -> Course 1
+        Student A -> Course 2
+
+        Student B -> Course 1
+        Student B -> Course 3 
+
+ - Self Relation
+
+    A model relates to itself.
+
+    Example:
+
+      Employee -> Manager
+
+      Manager is also Employee.
+
+      model Employee {
+        id Int @id @default(autoincrement())
+
+        managerId Int?
+
+        manager Employee? @relation("ManagerRelation", fields:[managerId], references:[id])
+
+        employees Employee[] @relation("ManagerRelation")
+      }
+
+    Visualization
+
+      CEO
+      ├─ Manager
+      │   ├─ Employee
+      │   └─ Employee 
+
+  - Referential Actions
+
+      Referential Actions define what happens to related records when parent data changes or deletes.
+
+      Example:
+
+        User
+        └─ Posts
+
+      If User is deleted:
+
+        What happens to Posts?
+
+        This is controlled by Referential Actions.
+
+  - onDelete
+
+      When parent record is deleted.
+
+        user User @relation(
+          fields:[userId],
+          references:[id],
+          onDelete: Cascade
+        )
+
+  - onUpdate
+
+      When parent record changes.
+
+        user User @relation(
+          fields:[userId],
+          references:[id],
+          onUpdate: Cascade
+        )
+
+    - Cascade
+
+      Delete Parent → Delete Children Automatically
+
+      Example:
+
+        model User {
+          id Int @id @default(autoincrement())
+
+          posts Post[]
+        }
+
+        model Post {
+          id Int @id @default(autoincrement())
+
+          userId Int
+
+          user User @relation(
+            fields:[userId],
+            references:[id],
+            onDelete: Cascade
+          )
+        }
+
+      Data:
+
+        User 1
+
+        Post A
+        Post B
+        Post C
+
+      Delete User 1
+
+        Result:
+
+        Post A Deleted
+        Post B Deleted
+        Post C Deleted
+
+  Other Important Referential Actions
+    Action              Meaning
+    Cascade	            Parent delete → Child delete
+    Restrict	          Delete blocked
+    NoAction	          Database handles it
+    SetNull	            Foreign Key becomes NULL
+    SetDefault	        Default value set
+
+  - Interview-Level Summary (Must Remember)
+      Field Attributes:
+        @id
+        @unique
+        @default()
+        @updatedAt
+        @map()
+        @relation()
+
+      Model Attributes:
+        @@id()
+        @@unique()
+        @@index()
+
+      Relations: 
+        One-To-One
+        One-To-Many
+        Many-To-Many
+        Self Relation
+
+      Referential Actions:
+        Cascade
+        Restrict
+        NoAction
+        SetNull
+        SetDefault
+
+      Golden Rule:
+
+        When you see:
+          @relation(fields:[userId], references:[id])
+
+        Remember:
+          fields = Foreign Key in current model
+          references = Primary Key in related model
+
+        Example:
+          user User @relation(
+            fields:[userId],
+            references:[id]
+          )
+
+      Means:
+        Current Model's userId
+        references
+        User Model's id

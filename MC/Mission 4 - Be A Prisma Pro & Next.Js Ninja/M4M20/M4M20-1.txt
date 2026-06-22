@@ -1,0 +1,12 @@
+# Roadmap For A Project From Beginning To Completion
+
+  1. Read the Project Requirement or Requirement Analysis Thoroughly
+  2. Brainstorming
+  3. Note down important topics. Eg: Entities / Models, Features, Roles, API Endpoints
+  4. Note down the flow of the project. Eg: User Flow (Role Based), Other Feature Flow And Connection With User.
+  5. ERD Design or Database Design
+  6. Project Setup with required Tech Stack
+  7. Prisma Schema Models Defining
+  8. Prisma Migrate & Generate
+  9. Project Business Logic Implementation (For Backend) or Frontend
+  10. 

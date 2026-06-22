@@ -8,5 +8,6 @@
   6. Project Setup with required Tech Stack
   7. Prisma Schema Models Defining
   8. Prisma Migrate & Generate
-  9. Project Business Logic Implementation (For Backend) or Frontend
-  10. 
+  9. Project Business Logic Implementation (For Backend) or Frontend Components
+  10. Check for new features & Well testing completed features
+  11.  

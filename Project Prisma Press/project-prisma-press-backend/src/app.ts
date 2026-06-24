@@ -19,9 +19,7 @@ app.use(cookieParser());
 
 app.use(cors({}));
 
-app.get('/', async (req: Request, res: Response) => {
-  const user = await prisma.user.findMany();
-  console.log(user);
+app.get('/', (req: Request, res: Response) => {
   res.send('Hi, Prisma Server!');
 });
 

@@ -1,0 +1,14 @@
+Summary:
+  1. Project Planning To Completion
+  2. Brainstorm, Requirement Analysis & ERD Design
+  3. Project Setup + Prisma And DB Connection
+  4. Prisma Schema & Model
+  5. Multi File Schema Technique
+  6. Prisma Migration & Client Generation
+  7. Server & App Setup. Demo API & DB Check 
+  8. User Register Route: /api/users/register
+  9. Route, Controller, Service
+  10. Controller handles: Request & Response
+  11. Service handles: Core Business Logics & Database Queries
+  12. Controller handles: Error too using 'try & catch'!
+   

@@ -3,8 +3,6 @@ import httpStatus from 'http-status';
 import { userService } from './user.service';
 import { catchAsync } from '../../utils/catchAsync';
 import { sendResponse } from '../../utils/sendResponse';
-import config from '../../config';
-import { jwtUtils } from '../../utils/jwt';
 
 // RegisterUser
 // const registerUser = async (req: Request, res: Response) => {
@@ -80,7 +78,29 @@ const getMyProfile = catchAsync(
   },
 );
 
+// UpdateMyProfile
+const updateMyProfile = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string;
+
+    const payload = req.body;
+
+    const updatedProfile = await userService.updateMyProfileIntoDB(
+      userId,
+      payload,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'User profile updated successfully!',
+      data: { updatedProfile },
+    });
+  },
+);
+
 export const userController = {
   registerUser,
   getMyProfile,
+  updateMyProfile,
 };

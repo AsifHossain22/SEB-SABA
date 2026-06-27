@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import config from './config';
 import { userRoutes } from './modules/user/user.route';
+import { authRoutes } from './modules/auth/auth.route';
 
 const app: Application = express();
 
@@ -26,5 +27,8 @@ app.get('/', (req: Request, res: Response) => {
 
 // RegisterAPI
 app.use('/api/users', userRoutes);
+
+// AuthAPI
+app.use('/api/auth', authRoutes);
 
 export default app;

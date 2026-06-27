@@ -3,7 +3,10 @@ import { userController } from './user.controller';
 
 const router = Router();
 
-// RegisterUser
+// UserRegister
 router.post('/register', userController.registerUser);
+
+// UserProfile
+router.get('/me', userController.getMyProfile);
 
 export const userRoutes = router;

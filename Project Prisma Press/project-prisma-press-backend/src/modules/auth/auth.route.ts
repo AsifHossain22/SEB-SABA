@@ -3,7 +3,10 @@ import { authController } from './auth.controller';
 
 const router = Router();
 
-// POST
+// LogIn
 router.post('/login', authController.loginUser);
+
+// RefreshToken
+router.post('/refresh-token', authController.refreshToken);
 
 export const authRoutes = router;

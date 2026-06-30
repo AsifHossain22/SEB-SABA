@@ -122,7 +122,7 @@ const deletePost = catchAsync(
   },
 );
 
-// GetPostsStats
+// TODO: GetPostsStats
 const getPostsStats = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {},
 );

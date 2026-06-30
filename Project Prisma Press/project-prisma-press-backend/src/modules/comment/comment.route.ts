@@ -12,8 +12,15 @@ router.post(
   commentController.createComment,
 );
 
-// GetCommentById
+// GetCommentAuthorById
 router.get('/author/:authorId', commentController.getCommentByAuthorId);
+
+// ModerateComment
+router.put(
+  '/:commentId/moderate',
+  auth(Role.ADMIN),
+  commentController.moderateComment,
+);
 
 // GetCommentById
 router.get('/:commentId', commentController.getCommentByCommentId);
@@ -30,13 +37,6 @@ router.delete(
   '/:commentId',
   auth(Role.USER, Role.ADMIN, Role.AUTHOR),
   commentController.deleteComment,
-);
-
-// ModerateComment
-router.put(
-  '/:commentId/moderate',
-  auth(Role.ADMIN),
-  commentController.moderateComment,
 );
 
 export const commentRoutes = router;

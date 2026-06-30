@@ -124,7 +124,7 @@ const deletePost = async (
   });
 };
 
-// GetPostsStats
+// TODO: GetPostsStats
 const getPostsStats = async () => {};
 
 // GetMyPosts

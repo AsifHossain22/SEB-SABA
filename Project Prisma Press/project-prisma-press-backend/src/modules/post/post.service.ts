@@ -1,5 +1,5 @@
 import { prisma } from '../../lib/prisma';
-import { ICreatePostPayload } from './post.interface';
+import { ICreatePostPayload, IUpdatePostPayload } from './post.interface';
 
 // CreatePost
 const createPost = async (payload: ICreatePostPayload, userId: string) => {
@@ -57,10 +57,72 @@ const getPostById = async (postId: string) => {
 };
 
 // UpdatePost
-const updatePost = () => {};
+const updatePost = async (
+  postId: string,
+  payload: IUpdatePostPayload,
+  authorId: string,
+  isAdmin: boolean,
+) => {
+  // FindPost
+  const post = await prisma.post.findUniqueOrThrow({
+    where: {
+      id: postId,
+    },
+  });
+
+  // IsAdminOrAuthor
+  if (!isAdmin && post.authorId !== authorId) {
+    throw new Error("You don't have permission to update this post!");
+  }
+
+  const result = await prisma.post.update({
+    where: {
+      id: postId,
+    },
+    data: payload,
+    include: {
+      author: {
+        omit: {
+          password: true,
+        },
+      },
+      comments: true,
+    },
+  });
+  return result;
+};
 
 // DeletePost
-const deletePost = () => {};
+const deletePost = async (
+  postId: string,
+  authorId: string,
+  isAdmin: boolean,
+) => {
+  // FindPost
+  const post = await prisma.post.findUniqueOrThrow({
+    where: {
+      id: postId,
+    },
+  });
+
+  // IsAdminOrAuthor
+  if (!isAdmin && post.authorId !== authorId) {
+    throw new Error("You don't have permission to delete this post!");
+  }
+
+  // const result = await prisma.post.delete({
+  //   where: {
+  //     id: postId,
+  //   },
+  // });
+  // return result;
+
+  await prisma.post.delete({
+    where: {
+      id: postId,
+    },
+  });
+};
 
 // GetPostsStats
 const getPostsStats = async () => {};

@@ -58,12 +58,68 @@ const getPostById = catchAsync(
 
 // UpdatePost
 const updatePost = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {},
+  async (req: Request, res: Response, next: NextFunction) => {
+    // IsAuthorOrAdmin
+    const authorId = req.user?.id;
+    const isAdmin = req.user?.role === 'ADMIN';
+
+    // PostIdAndPayload
+    const postId = req.params.postId;
+
+    // ValidatePostId
+    if (!postId) {
+      throw new Error('Post ID required in Params!');
+    }
+
+    const payload = req.body;
+
+    const result = await postService.updatePost(
+      postId as string,
+      payload,
+      authorId as string,
+      isAdmin,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Post updated successfully!',
+      data: result,
+    });
+  },
 );
 
 // DeletePost
 const deletePost = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {},
+  async (req: Request, res: Response, next: NextFunction) => {
+    // IsAuthorOrAdmin
+    const authorId = req.user?.id;
+    const isAdmin = req.user?.role === 'ADMIN';
+
+    // PostId
+    const postId = req.params.postId;
+
+    // ValidatePostId
+    if (!postId) {
+      throw new Error('Post ID required in Params!');
+    }
+
+    // const result = await postService.deletePost(
+    //   postId as string,
+    //   authorId as string,
+    //   isAdmin,
+    // );
+
+    await postService.deletePost(postId as string, authorId as string, isAdmin);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Post deleted successfully!',
+      // data: result,
+      data: null,
+    });
+  },
 );
 
 // GetPostsStats

@@ -1,0 +1,11 @@
+# Transaction And Rollback
+
+ACID: 
+  -  Atomic:
+    - All step happen, or none do
+  - Consistent:
+    - Money is never created or lost
+  - Isolated:
+    - Transaction don't interfere with each other
+  - Durable: 
+    - Once saved, it's saved for good  

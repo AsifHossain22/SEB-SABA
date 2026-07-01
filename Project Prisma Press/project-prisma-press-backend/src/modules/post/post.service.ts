@@ -30,46 +30,95 @@ const getAllPosts = async () => {
 
 // GetSinglePosts
 const getPostById = async (postId: string) => {
-  await prisma.post.update({
-    where: {
-      id: postId,
-    },
-    data: {
-      views: {
-        increment: 1,
-      },
-    },
-  });
+  // await prisma.post.update({
+  //   where: {
+  //     id: postId,
+  //   },
+  //   data: {
+  //     views: {
+  //       increment: 1,
+  //     },
+  //   },
+  // });
 
-  // throw new Error('Fake Error!');
+  // // throw new Error('Fake Error!');
 
-  const post = await prisma.post.findUniqueOrThrow({
-    where: {
-      id: postId,
-    },
-    include: {
-      author: {
-        omit: {
-          password: true,
-        },
-      },
-      comments: {
+  // const post = await prisma.post.findUniqueOrThrow({
+  //   where: {
+  //     id: postId,
+  //   },
+  //   include: {
+  //     author: {
+  //       omit: {
+  //         password: true,
+  //       },
+  //     },
+  //     comments: {
+  //       where: {
+  //         status: CommentStatus.APPROVED,
+  //       },
+  //       orderBy: {
+  //         createdAt: 'desc',
+  //       },
+  //     },
+  //     _count: {
+  //       select: {
+  //         comments: true,
+  //       },
+  //     },
+  //   },
+  // });
+
+  // return post;
+
+  const transactionResult = await prisma.$transaction(
+    async tx => {
+      await tx.post.update({
         where: {
-          status: CommentStatus.APPROVED,
+          id: postId,
         },
-        orderBy: {
-          createdAt: 'desc',
+        data: {
+          views: {
+            increment: 1,
+          },
         },
-      },
-      _count: {
-        select: {
-          comments: true,
-        },
-      },
-    },
-  });
+      });
 
-  return post;
+      // throw new Error('Fake Error!');
+
+      const post = await tx.post.findUniqueOrThrow({
+        where: {
+          id: postId,
+        },
+        include: {
+          author: {
+            omit: {
+              password: true,
+            },
+          },
+          comments: {
+            where: {
+              status: CommentStatus.APPROVED,
+            },
+            orderBy: {
+              createdAt: 'desc',
+            },
+          },
+          _count: {
+            select: {
+              comments: true,
+            },
+          },
+        },
+      });
+      return post;
+    },
+    {
+      maxWait: 15000, // Wait up to 15 seconds to grab a connection from the pool (default: 2s)
+      timeout: 20000, // Give the block up to 20 seconds to execute completely (default: 5s)
+    },
+  );
+  return transactionResult;
 };
 
 // UpdatePost

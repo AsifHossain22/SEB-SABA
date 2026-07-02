@@ -1,4 +1,4 @@
-import express, { Application, Request, Response } from 'express';
+import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import config from './config';
@@ -6,6 +6,9 @@ import { userRoutes } from './modules/user/user.route';
 import { authRoutes } from './modules/auth/auth.route';
 import { postRoutes } from './modules/post/post.route';
 import { commentRoutes } from './modules/comment/comment.route';
+import { notFound } from './middleware/notFound';
+import httpStatus from 'http-status';
+import { globalErrorHandler } from './middleware/globalErrorHandler';
 
 const app: Application = express();
 
@@ -38,5 +41,9 @@ app.use('/api/posts', postRoutes);
 
 // CommentsAPI
 app.use('/api/comments', commentRoutes);
+
+app.use(notFound);
+
+app.use(globalErrorHandler);
 
 export default app;

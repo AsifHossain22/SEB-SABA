@@ -7,13 +7,10 @@ import httpStatus from 'http-status';
 // CreateComment
 const createComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user?.id;
+    const authorId = req.user?.id as string;
     const payload = req.body;
 
-    const result = await commentService.createComment(
-      payload,
-      userId as string,
-    );
+    const result = await commentService.createComment(authorId, payload);
 
     sendResponse(res, {
       success: true,
@@ -27,11 +24,7 @@ const createComment = catchAsync(
 // GetCommentByAuthorId
 const getCommentByAuthorId = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const authorId = req.params.authorId;
-
-    if (!authorId) {
-      throw new Error('Author ID required in Params!');
-    }
+    const { authorId } = req.params;
 
     const result = await commentService.getCommentByAuthorId(
       authorId as string,
@@ -67,17 +60,17 @@ const getCommentByCommentId = catchAsync(
 // UpdateComment
 const updateComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user;
     const { commentId } = req.params;
-
+    const authorId = user?.id as string;
     const payload = req.body;
-    const userId = req.user?.id as string;
     const role = req.user?.role;
     const isAdmin = role === 'ADMIN';
 
     const result = await commentService.updateComment(
       commentId as string,
       payload,
-      userId,
+      authorId,
       isAdmin,
     );
 
@@ -93,12 +86,13 @@ const updateComment = catchAsync(
 // DeleteComment
 const deleteComment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.body;
     const { commentId } = req.params;
-    const userId = req.user?.id as string;
+    const authorId = user?.id as string;
     const role = req.user?.role;
     const isAdmin = role === 'ADMIN';
 
-    await commentService.deleteComment(commentId as string, userId, isAdmin);
+    await commentService.deleteComment(commentId as string, authorId, isAdmin);
 
     sendResponse(res, {
       success: true,

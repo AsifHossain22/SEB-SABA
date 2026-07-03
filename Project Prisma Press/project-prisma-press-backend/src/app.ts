@@ -9,6 +9,7 @@ import { commentRoutes } from './modules/comment/comment.route';
 import { notFound } from './middleware/notFound';
 import httpStatus from 'http-status';
 import { globalErrorHandler } from './middleware/globalErrorHandler';
+import { subscriptionRoutes } from './modules/subscription/subscription.route';
 
 const app: Application = express();
 
@@ -41,6 +42,9 @@ app.use('/api/posts', postRoutes);
 
 // CommentsAPI
 app.use('/api/comments', commentRoutes);
+
+// CheckOutAPIStrip
+app.use('/api/subscription', subscriptionRoutes);
 
 app.use(notFound);
 

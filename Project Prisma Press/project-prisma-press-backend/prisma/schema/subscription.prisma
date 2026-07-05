@@ -12,7 +12,8 @@ model Subscription{
   // StipeCustomerId
   stripeCustomerId String @unique
 
-  // StripeSubscriptionId
+  // StipeSubscriptionId
+  stripeSubscriptionId String @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

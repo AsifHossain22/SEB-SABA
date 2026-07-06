@@ -2,6 +2,7 @@ import Stripe from 'stripe';
 import config from '../../config';
 import { prisma } from '../../lib/prisma';
 import { stripe } from '../../lib/stripe';
+import { SubscriptionStatus } from '../../../generated/prisma/enums';
 
 const createCheckoutSession = async (userId: string) => {
   const transactionResult = await prisma.$transaction(async tx => {
@@ -123,6 +124,28 @@ const handleCheckOutCompleted = async (session: Stripe.Checkout.Session) => {
       currentPeriodEnd,
     },
   });
+};
+
+const handleChangeSubscription = async (payload: Stripe.Subscription) => {
+  const stripeSubscriptionId = payload.id;
+  const status =
+    payload.status === 'active' || payload.status === 'trialing'
+      ? SubscriptionStatus.ACTIVE
+      : payload.status === 'canceled'
+        ? SubscriptionStatus.CANCELLED
+        : SubscriptionStatus.EXPIRED;
+
+  const currentPeriodEnd = getPeriodEnd(payload);
+
+  const isSubscriptionExist = await prisma.subscription.findUniqueOrThrow({
+    where: {
+      stripeSubscriptionId,
+    },
+  });
+
+  if (!isSubscriptionExist) {
+    console.log(`Webhook: No Subscription found for subscription id : `);
+  }
 };
 
 export const subscriptionService = {

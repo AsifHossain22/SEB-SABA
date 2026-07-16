@@ -1,0 +1,154 @@
+import Stripe from 'stripe';
+import config from '../../config';
+import { prisma } from '../../lib/prisma';
+import { stripe } from '../../lib/stripe';
+import { SubscriptionStatus } from '../../../generated/prisma/enums';
+
+const createCheckoutSession = async (userId: string) => {
+  const transactionResult = await prisma.$transaction(async tx => {
+    const user = await tx.user.findUniqueOrThrow({
+      where: {
+        id: userId,
+      },
+      include: {
+        subscription: true,
+      },
+    });
+
+    let stripeCustomerId = user.subscription?.stripeCustomerId;
+
+    if (!stripeCustomerId) {
+      // NewSubscriber
+      const customer = await stripe.customers.create({
+        email: user.email,
+        name: user.name,
+        metadata: { userId: user.id },
+      });
+
+      stripeCustomerId = customer.id;
+    }
+
+    const session = await stripe.checkout.sessions.create({
+      line_items: [
+        {
+          price: config.stripe_product_price_id,
+          quantity: 1,
+        },
+      ],
+      mode: 'subscription',
+      customer: stripeCustomerId,
+      payment_method_types: ['card'],
+      success_url: `${config.app_url}/premium?success=true`,
+      cancel_url: `${config.app_url}/payment?success=false`,
+      metadata: { userId: user.id },
+    });
+    return session.url;
+  });
+  return {
+    paymentUrl: transactionResult,
+  };
+};
+
+const handleWebhook = async (payload: Buffer, signature: string) => {
+  const endpointSecret = config.stripe_webhook_secret;
+  const event = stripe.webhooks.constructEvent(
+    payload,
+    signature,
+    endpointSecret,
+  );
+
+  // Handle the event
+  switch (event.type) {
+    case 'checkout.session.completed':
+      // Occurs when a checkout session has been successfully completed
+      // event.data.object;
+      await handleCheckOutCompleted(event.data.object);
+
+      break;
+    case 'customer.subscription.updated':
+      // Then define and call a method to handle the successful attachment of a PaymentMethod.
+      // handlePaymentMethodAttached(paymentMethod);
+      break;
+
+    case 'customer.subscription.deleted':
+      // Occurs whenever a customer's subscription ends
+      break;
+
+    default:
+      // Unexpected event type
+      console.log(`No event matched. Unhandled event type ${event.type}.`);
+      break;
+  }
+};
+
+const getPeriodEnd = (payload: Stripe.Subscription) => {
+  const currentPeriodEndInMilleSeconds =
+    payload.items.data[0]?.current_period_end!;
+
+  const currentPeriodEnd = new Date(currentPeriodEndInMilleSeconds * 1000);
+
+  return currentPeriodEnd;
+};
+
+const handleCheckOutCompleted = async (session: Stripe.Checkout.Session) => {
+  const userId = session.metadata?.userId;
+  const stripeCustomerId = session.customer as string;
+  const stripeSubscriptionId = session.subscription as string;
+
+  if (!userId || !stripeSubscriptionId || !stripeCustomerId) {
+    throw new Error('Webhook failed!');
+  }
+
+  const stripeSubscription =
+    await stripe.subscriptions.retrieve(stripeSubscriptionId);
+
+  console.log('Sub info: ', stripeSubscription.items.data[0]);
+
+  const currentPeriodEnd = getPeriodEnd(stripeSubscription);
+
+  await prisma.subscription.upsert({
+    where: {
+      userId,
+    },
+    create: {
+      userId,
+      stripeCustomerId,
+      stripeSubscriptionId,
+      status: 'ACTIVE',
+      currentPeriodEnd,
+    },
+    update: {
+      stripeCustomerId,
+      stripeSubscriptionId,
+      status: 'ACTIVE',
+      currentPeriodEnd,
+    },
+  });
+};
+
+const handleChangeSubscription = async (payload: Stripe.Subscription) => {
+  const stripeSubscriptionId = payload.id;
+  const status =
+    payload.status === 'active' || payload.status === 'trialing'
+      ? SubscriptionStatus.ACTIVE
+      : payload.status === 'canceled'
+        ? SubscriptionStatus.CANCELLED
+        : SubscriptionStatus.EXPIRED;
+
+  const currentPeriodEnd = getPeriodEnd(payload);
+
+  const isSubscriptionExist = await prisma.subscription.findUniqueOrThrow({
+    where: {
+      stripeSubscriptionId,
+    },
+  });
+
+  if (!isSubscriptionExist) {
+    console.log(`Webhook: No Subscription found for subscription id : `);
+  }
+};
+
+export const subscriptionService = {
+  createCheckoutSession,
+  handleWebhook,
+};

@@ -14,8 +14,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`h-full antialiased`}>
       <body className="min-h-full flex flex-col">
-        <nav>Navbar</nav>
+        {/* Navbar */}
+        {/* <nav>Navbar</nav> */}
         {children}
+        {/* Footer */}
+        {/* <footer>Footer</footer> */}
       </body>
     </html>
   );

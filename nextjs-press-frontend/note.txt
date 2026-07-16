@@ -1,0 +1,17 @@
+# Project Analysis
+
+Routes: 
+
+1. Auth Routes 
+  - Register
+  - Login
+2. Public Routes
+  - Blogs/News List Route
+  - Blog/News By Id Route
+3. Private Route
+  - User Dashboard Route
+    - Dashboard Home Route
+    - Profile Route
+    - Subscribe Route
+  - Admin Dashboard Route
+  - Author Dashboard Route

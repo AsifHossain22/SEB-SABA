@@ -1,5 +1,4 @@
-import Link from 'next/link';
-import LikeButton from './ui/LikeButton';
+import { Button } from '@/components/ui/button';
 
 export default function Home() {
   console.log('Root Route');
@@ -7,11 +6,9 @@ export default function Home() {
     <div>
       <h1>Welcome to Next.js</h1>
 
-      <h3>
-        Blog Page <Link href={'/blogs/1'}>Blogs</Link>
-      </h3>
-
-      <LikeButton />
+      <Button size={'xs'} variant={'destructive'}>
+        Click Me
+      </Button>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import './globals.css';
 import { Inter, Oxanium } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { Toaster } from 'sonner';
+import { Navbar } from '@/components/shared/navbar';
 
 const interHeading = Inter({ subsets: ['latin'], variable: '--font-heading' });
 
@@ -31,7 +32,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         {/* Navbar */}
-        {/* <nav>Navbar</nav> */}
+        <Navbar />
         {children}
         {/* Footer */}
         {/* <footer>Footer</footer> */}

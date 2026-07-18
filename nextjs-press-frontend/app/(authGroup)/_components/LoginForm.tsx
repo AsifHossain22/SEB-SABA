@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import React from 'react';
+import { loginAction } from '../_actions/authActions';
 
 const LoginForm = () => {
   return (
     <>
-      <form className="space-y-4">
+      <form action={loginAction} className="space-y-4">
         <Card className="p-5 space-y-4">
           <Input
             name="email"
@@ -16,14 +17,12 @@ const LoginForm = () => {
             placeholder="Enter your email"
             required
           />
-          <Input />
           <Input
             name="password"
             type="password"
             placeholder="Enter your password"
             required
           />
-          <Input />
           <Button type="submit">Login</Button>
         </Card>
       </form>

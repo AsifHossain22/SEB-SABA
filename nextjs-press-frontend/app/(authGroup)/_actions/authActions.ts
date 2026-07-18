@@ -1,6 +1,7 @@
 'use server';
 
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 type TLoginState = {
   success: true;
@@ -35,7 +36,7 @@ export const loginAction = async (
     body: JSON.stringify(payload),
   });
 
-  const result: TLoginState = await res.json();
+  const result = await res.json();
 
   if (result.success) {
     const cookieStore = await cookies();
@@ -51,6 +52,9 @@ export const loginAction = async (
       maxAge: 60 * 60 * 24 * 7, // 7 Day
       sameSite: 'lax',
     });
+
+    // redirect('/dashboard', 'replace'); // RemoveBrowsingHistory - So can't return back
+    redirect('/dashboard'); // KeepBrowsingHistory - So can go back
   }
 
   return result;

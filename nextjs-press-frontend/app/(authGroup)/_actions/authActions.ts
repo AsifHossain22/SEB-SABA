@@ -1,5 +1,7 @@
 'use server';
 
+import { cookies } from 'next/headers';
+
 type TLoginState = {
   success: true;
   statusCode: number;
@@ -33,9 +35,23 @@ export const loginAction = async (
     body: JSON.stringify(payload),
   });
 
-  const result = await res.json();
+  const result: TLoginState = await res.json();
 
-  console.log(result);
+  if (result.success) {
+    const cookieStore = await cookies();
+
+    cookieStore.set('Access Token: ', result.data.accessToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24, // 1 Day
+      sameSite: 'lax',
+    });
+
+    cookieStore.set('Refresh Token: ', result.data.refreshToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7, // 7 Day
+      sameSite: 'lax',
+    });
+  }
 
   return result;
 };

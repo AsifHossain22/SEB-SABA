@@ -15,7 +15,35 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { navItems, userMenuItems } from '../ui/config/nav-items';
 import { cn } from '@/lib/utils';
 
-export function Navbar() {
+type IUser = {
+  success: boolean;
+  message: string;
+  data: {
+    profile: {
+      id: string;
+      name: string;
+      email: string;
+      activeStatus: string;
+      role: string;
+      createdAt: string;
+      updatedAt: string;
+      profile: {
+        id: string;
+        profilePhoto: string;
+        bio: string | null;
+        userId: string;
+        createdAt: string;
+        updatedAt: string;
+      };
+    };
+  };
+};
+
+type TNavbarProps = {
+  user: IUser;
+};
+
+export function Navbar({ user }: TNavbarProps) {
   const pathname = usePathname();
 
   return (
@@ -56,10 +84,12 @@ export function Navbar() {
             >
               <Avatar className="size-10">
                 <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="User avatar"
+                  src={user.data.profile.profile.profilePhoto}
+                  alt={user.data.profile.name || 'User Name'}
                 />
-                <AvatarFallback>JD</AvatarFallback>
+                <AvatarFallback>
+                  {user.data.profile.name || 'Name'}
+                </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
@@ -68,15 +98,17 @@ export function Navbar() {
               <div className="flex items-center gap-2 px-2 py-1.5">
                 <Avatar className="size-8">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="User avatar"
+                    src={user.data.profile.profile.profilePhoto}
+                    alt={user.data.profile.name || 'User Name'}
                   />
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarFallback>{user.data.profile.name}</AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
-                  <p className="text-sm font-medium">John Doe</p>
+                  <p className="text-sm font-medium">
+                    {user.data.profile.name}
+                  </p>
                   <p className="text-xs text-muted-foreground">
-                    john@example.com
+                    {user.data.profile.email || 'User Email'}
                   </p>
                 </div>
               </div>

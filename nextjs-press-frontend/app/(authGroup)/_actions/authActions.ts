@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-type TLoginState = {
+type LoginState = {
   success: true;
   statusCode: number;
   message: string;
@@ -14,12 +14,9 @@ type TLoginState = {
 };
 
 export const loginAction = async (
-  prevState: TLoginState,
+  prevState: LoginState,
   formData: FormData,
 ) => {
-  console.log(formData);
-  console.log('Prev State: ', prevState);
-
   const email = formData.get('email');
   const password = formData.get('password');
 
@@ -41,20 +38,18 @@ export const loginAction = async (
   if (result.success) {
     const cookieStore = await cookies();
 
-    cookieStore.set('Access Token: ', result.data.accessToken, {
+    cookieStore.set('accessToken', result.data.accessToken, {
       httpOnly: true,
-      maxAge: 60 * 60 * 24, // 1 Day
+      maxAge: 60 * 60 * 24,
+      sameSite: 'lax',
+    });
+    cookieStore.set('refreshToken', result.data.refreshToken, {
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7,
       sameSite: 'lax',
     });
 
-    cookieStore.set('Refresh Token: ', result.data.refreshToken, {
-      httpOnly: true,
-      maxAge: 60 * 60 * 24 * 7, // 7 Day
-      sameSite: 'lax',
-    });
-
-    // redirect('/dashboard', 'replace'); // RemoveBrowsingHistory - So can't return back
-    redirect('/dashboard'); // KeepBrowsingHistory - So can go back
+    redirect('/dashboard');
   }
 
   return result;

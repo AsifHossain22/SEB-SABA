@@ -34,7 +34,9 @@ const LoginForm = () => {
           placeholder="Enter Your Password"
           required
         />
-        <Button type="submit">{pending ? 'Submitting...' : 'Login'}</Button>
+        <Button type="submit" className="cursor-pointer">
+          {pending ? 'Submitting...' : 'Login'}
+        </Button>
       </Card>
     </form>
   );

@@ -121,8 +121,10 @@ export function Navbar({ user }: NavbarProps) {
                       key={item.action}
                       onClick={() => handleUserMenuAction(item.action)}
                     >
-                      <Icon className="w-4 h-4 mr-2" />
-                      <span>{item.label}</span>
+                      <div className="inline-flex items-center gap-3 w-full cursor-pointer">
+                        <Icon className="w-4 h-4 mr-2" />
+                        <span>{item.label}</span>
+                      </div>
                     </DropdownMenuItem>
                   );
                 })}
@@ -132,8 +134,10 @@ export function Navbar({ user }: NavbarProps) {
                     await handleUserMenuAction('logout');
                   }}
                 >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  <span>Log Out</span>
+                  <div className="inline-flex items-center gap-3 w-full cursor-pointer">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    <span>Log Out</span>
+                  </div>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

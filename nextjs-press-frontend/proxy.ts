@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server';
 import { JwtPayload } from 'jsonwebtoken';
 import { jwtUtils } from './utils/jwt';
 import { cookies } from 'next/headers';
+import { getNewAccessToken } from './service/refreshToken';
 
 const AUTH_ROUTES = ['/login', '/register'];
 
@@ -18,23 +19,53 @@ export async function proxy(request: NextRequest) {
   const cookieStore = await cookies();
   // const accessToken = cookieStore.get('accessToken')?.value;
 
-  const accessToken = request.cookies.get('accessToken')?.value;
+  let accessToken = request.cookies.get('accessToken')?.value;
 
-  const decodedToken = accessToken
+  const refreshToken = request.cookies.get('refreshToken')?.value;
+
+  let decodedAccessToken = accessToken
     ? jwtUtils.verifyToken(accessToken, process.env.JWT_ACCESS_SECRET as string)
     : null;
 
-  let userRole = null;
+  const decodedRefreshToken = refreshToken
+    ? jwtUtils.verifyToken(
+        refreshToken,
+        process.env.JWT_REFRESH_SECRET as string,
+      )
+    : null;
 
-  if (!decodedToken?.success) {
-    // TokenExpired - ClearCookie
-    cookieStore.delete('accessToken');
+  if (!decodedAccessToken?.success && decodedRefreshToken?.success) {
+    // AccessTokenExpiredButRefreshTokenValid
+    const result = await getNewAccessToken();
 
-    return NextResponse.redirect(new URL('/login', request.url));
+    if (result.success) {
+      const newAccessToken = result.data.accessToken;
+
+      cookieStore.set('accessToken', newAccessToken, {
+        httpOnly: true,
+        maxAge: 60 * 60 * 24,
+        sameSite: 'lax',
+      });
+
+      accessToken = newAccessToken;
+
+      decodedAccessToken = jwtUtils.verifyToken(
+        accessToken!,
+        process.env.JWT_ACCESS_SECRET as string,
+      );
+    }
   }
 
-  if (decodedToken?.success && decodedToken.data) {
-    userRole = (decodedToken.data as JwtPayload).role;
+  let userRole = null;
+
+  if (!decodedAccessToken?.success) {
+    // TokenExpired - ClearCookie
+    cookieStore.delete('accessToken');
+    // return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  if (decodedAccessToken?.success && decodedAccessToken.data) {
+    userRole = (decodedAccessToken.data as JwtPayload).role;
   }
 
   // UserIsLoggedInAndTryingToAccessLoginOrRegisterPage

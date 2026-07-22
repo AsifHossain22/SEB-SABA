@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
+import { jwtUtils } from './utils/jwt';
+import { cookies } from 'next/headers';
 
 const AUTH_ROUTES = ['/login', '/register'];
 
@@ -13,19 +15,26 @@ export async function proxy(request: NextRequest) {
   // console.log('Proxy request: ', request.nextUrl);
   // console.log('Pathname: ', pathName);
 
-  // const cookieStore = await cookies();
+  const cookieStore = await cookies();
   // const accessToken = cookieStore.get('accessToken')?.value;
 
   const accessToken = request.cookies.get('accessToken')?.value;
 
   const decodedToken = accessToken
-    ? (jwt.decode(accessToken) as JwtPayload)
+    ? jwtUtils.verifyToken(accessToken, process.env.JWT_ACCESS_SECRET as string)
     : null;
 
   let userRole = null;
 
-  if (decodedToken) {
-    userRole = decodedToken.role;
+  if (!decodedToken?.success) {
+    // TokenExpired - ClearCookie
+    cookieStore.delete('accessToken');
+
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  if (decodedToken?.success && decodedToken.data) {
+    userRole = (decodedToken.data as JwtPayload).role;
   }
 
   // UserIsLoggedInAndTryingToAccessLoginOrRegisterPage
@@ -49,10 +58,22 @@ export async function proxy(request: NextRequest) {
     route => pathName === route || pathName.startsWith(route + '/'),
   );
 
+  // Authentication
   if (!accessToken && !isPublicRoute && !isAuthRoute) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
+  // Authorization - RoleBasedAccessControl
+  if (pathName.startsWith('/admin-dashboard') && userRole !== 'ADMIN') {
+    return NextResponse.redirect(new URL('/not-found', request.url));
+  } else if (
+    pathName.startsWith('/author-dashboard') &&
+    userRole !== 'AUTHOR'
+  ) {
+    return NextResponse.redirect(new URL('/not-found', request.url));
+  } else if (pathName.startsWith('/dashboard') && userRole !== 'USER') {
+    return NextResponse.redirect(new URL('/not-found', request.url));
+  }
   // return NextResponse.redirect(new URL('/', request.url));
   return NextResponse.next();
 }

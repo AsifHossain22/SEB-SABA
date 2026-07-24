@@ -10,6 +10,7 @@ import { notFound } from './middleware/notFound';
 import { globalErrorHandler } from './middleware/globalErrorHandler';
 import { subscriptionRoutes } from './modules/subscription/subscription.route';
 import { stripe } from './lib/stripe';
+import { premiumRoutes } from './modules/premium/premium.route';
 
 const app: Application = express();
 
@@ -100,6 +101,9 @@ app.use('/api/comments', commentRoutes);
 
 // CheckOutAPIStrip
 app.use('/api/subscription', subscriptionRoutes);
+
+// PremiumPosts
+app.use('/api/premium', premiumRoutes);
 
 app.use(notFound);
 

@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 import { catchAsync } from '../../utils/catchAsync';
-import { subscriptionService } from './subscription.service';
 import { sendResponse } from '../../utils/sendResponse';
 import httpStatus from 'http-status';
+import { subscriptionServices } from './subscription.service';
 
 const createCheckoutSession = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.user?.id;
 
-    const result = await subscriptionService.createCheckoutSession(
+    const result = await subscriptionServices.createCheckoutSession(
       userId as string,
     );
 
@@ -27,7 +27,7 @@ const handleWebhook = catchAsync(
     const event = req.body as Buffer;
     const signature = req.headers['stripe-signature']!;
 
-    await subscriptionService.handleWebhook(event, signature as string);
+    await subscriptionServices.handleWebhook(event, signature as string);
 
     sendResponse(res, {
       success: true,
@@ -38,7 +38,26 @@ const handleWebhook = catchAsync(
   },
 );
 
+// SubscriptionStatus
+const getSubscriptionStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id;
+
+    const result = await subscriptionServices.getSubscriptionStatus(
+      userId as string,
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Subscription status retrieved successfully',
+      data: result,
+    });
+  },
+);
+
 export const subscriptionController = {
   createCheckoutSession,
   handleWebhook,
+  getSubscriptionStatus,
 };

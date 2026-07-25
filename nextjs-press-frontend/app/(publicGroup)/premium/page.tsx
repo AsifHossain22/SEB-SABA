@@ -8,6 +8,12 @@ const PremiumPage = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
+  const search = await searchParams;
+  // console.log('Search Params: ', search);
+
+  console.log('Search Params: ', JSON.parse(search.tags as string));
+
+  // console.log('Search Params: ', JSON.parse(JSON.stringify(search)));
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-10 sm:px-6 lg:px-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

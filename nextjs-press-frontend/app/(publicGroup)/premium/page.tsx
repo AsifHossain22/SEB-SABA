@@ -8,10 +8,7 @@ const PremiumPage = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-  const search = await searchParams;
   // console.log('Search Params: ', search);
-
-  console.log('Search Params: ', JSON.parse(search.tags as string));
 
   // console.log('Search Params: ', JSON.parse(JSON.stringify(search)));
   return (

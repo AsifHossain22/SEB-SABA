@@ -42,7 +42,7 @@ export const getPremiumNews = async ({
       },
       cache: 'no-cache',
       next: {
-        revalidate: 60 * 60 * 6, // 6 hrs
+        revalidate: 60 * 60 * 6,
         tags: ['premium-posts'],
       },
     },

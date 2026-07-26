@@ -7,30 +7,42 @@ import {
   IUpdatePostPayload,
 } from './post.interface';
 
-// CreatePost
 const createPost = async (payload: ICreatePostPayload, userId: string) => {
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id: userId,
+    },
+    include: {
+      subscription: true,
+    },
+  });
+
+  if (payload.isPremium && user.subscription?.status !== 'ACTIVE') {
+    throw new Error(
+      'You are not a premium user. So You can not create Premium content',
+    );
+  }
+
   const result = await prisma.post.create({
     data: {
       ...payload,
       authorId: userId,
     },
   });
+
   return result;
 };
 
-// GetAllPosts
 const getAllPosts = async (query: IPostQuery) => {
   const limit = query.limit ? Number(query.limit) : 10;
   const page = query.page ? Number(query.page) : 1;
-  const skip = page - 1 * limit;
-
+  const skip = (page - 1) * limit;
   const sortBy = query.sortBy ? query.sortBy : 'createdAt';
   const sortOrder = query.sortOrder ? query.sortOrder : 'desc';
 
   const tags = query.tags ? JSON.parse(query.tags as string) : null;
 
   const tagsArray = Array.isArray(tags) ? tags : [];
-  console.log(tagsArray, 'tagsArray');
 
   const andConditions: PostWhereInput[] = [];
 
@@ -91,53 +103,181 @@ const getAllPosts = async (query: IPostQuery) => {
     });
   }
 
+  andConditions.push({
+    isPremium: false,
+  });
+
   const posts = await prisma.post.findMany({
-    // DynamicSearchingAndFiltering
-    // where: {
-    //   AND: [
-    //     query.searchTerm
-    //       ? {
-    //           OR: [
-    //             {
-    //               title: {
-    //                 contains: query.searchTerm,
-    //                 mode: 'insensitive',
-    //               },
-    //             },
-    //             {
-    //               content: {
-    //                 contains: query.searchTerm,
-    //                 mode: 'insensitive',
-    //               },
-    //             },
-    //           ],
+    // filtering / exact match without AND Operator
+
+    // where : {
+    //     title: "My Fourth Post",
+    //     content : "Ronaldo"
+    // },
+
+    // filtering / exact match with AND Operator
+
+    // where : {
+    //     AND : [
+    //         {
+    //             title: "My Fourth Post",
+    //         },
+    //         {
+    //             content: "Ronaldo"
+    //         },
+    //         {
+    //             tags : {
+
+    //             }
     //         }
-    //       : {},
+    //     ]
+    // },
 
-    //     // TitleFiltering
-    //     query.title ? { title: query.title } : {},
+    // searching / partial match
 
-    //     // ContentFiltering
-    //     query.content ? { content: query.content } : {},
+    // where : {
+    //     title : {
+    //         contains : "ronaLdo",
+    //         mode : "insensitive"
+    //     },
 
-    //     // {
-    //     //   tags: {
-    //     //       hasSome: [""]
-    //     //     }
-    //     //   }
-    //   ],
+    //     // X -> Not ideal for partial match
+    //     // content : {
+    //     //     contains : "Ronaldo"
+    //     // }
+    // },
+
+    // searching / partial search with OR operator
+
+    // where : {
+    //     OR : [
+    //         {
+    //             title : {
+    //                 contains : "Ron",
+    //                 mode : "insensitive"
+    //             },
+
+    //         },
+
+    //         {
+    //             content : {
+    //                 contains : "Ro",
+    //                 mode : "insensitive"
+    //             }
+    //         }
+    //     ]
+    // },
+
+    // combining search (OR Operator) and filtering (AND)
+
+    // where : {
+    //     //filtering & searching combined
+    //     AND : [
+    //         {
+    //             // searching
+    //             OR : [
+    //                 {
+    //                     title : {
+    //                         contains : "Ron",
+    //                         mode : "insensitive"
+    //                     }
+    //                 },
+
+    //                 {
+    //                     content : {
+    //                         contains : "Ron",
+    //                         mode : "insensitive"
+    //                     }
+
+    //                 }
+    //             ]
+    //         },
+
+    //         // filtering
+    //         {
+    //             title : "Ronaldo Nazario"
+    //         },
+
+    //         {
+    //             content : "Ronaldo"
+    //         }
+    //     ]
+    // },
+
+    // Pagination with (limit or take) and (skip or page )
+
+    // take : 1,
+    // take : 2,
+    // for first page skip is 0
+    // skip : 1, // visiting page 2
+    // skip : 2, // visiting page 3
+    // skip : 3, // visiting page 4
+    //page =4 , limit / take = 1 => skip : (page-1) * limit =>
+
+    //page = 3, limit / take = 10 => skip : (page -1 ) * limit = (3-1) * 10 = 20
+
+    // sorting in ascending or descending order on specific fields
+
+    // orderBy : {
+    //     createdAt : "desc",
+    //     title : "asc",
+    //     content : "desc"
+    //     //fieldName : asc/desc
+    // },
+
+    // dynamic searching, filtering
+
+    // where : {
+    //     AND : [
+
+    //         query.searchTerm ? {
+    //             OR : [
+    //                 {
+    //                     title : {
+    //                         contains : query.searchTerm,
+    //                         mode : "insensitive"
+    //                     }
+
+    //                 },
+    //                 {
+    //                     content: {
+    //                         contains: query.searchTerm,
+    //                         mode: "insensitive"
+    //                     },
+    //                 }
+    //             ]
+    //         } : {},
+
+    //         //title filtering
+
+    //         // {
+    //         //     title : query.title
+    //         // },
+
+    //         query.title ? { title : query.title  } : {},
+
+    //         //content filtering
+    //         query.content ? { content : query.content} : {},
+
+    //         // {
+    //         //     tags : {
+    //         //         hasSome : [""]
+    //         //     }
+    //         // }
+    //     ]
     // },
 
     where: {
       AND: andConditions,
     },
 
-    // DynamicPaginationAndSorting
+    // dynamic pagination and sorting
+
     take: limit,
     skip: skip,
 
     orderBy: {
-      // SortBy : SortOrder
+      // sortBy : sortOrder
       [sortBy]: sortOrder,
     },
 
@@ -150,119 +290,132 @@ const getAllPosts = async (query: IPostQuery) => {
       comments: true,
     },
   });
-  return posts;
+
+  const totalPostCount = await prisma.post.count({
+    where: {
+      AND: andConditions,
+    },
+  });
+
+  return {
+    data: posts,
+    meta: {
+      page: page,
+      limit: limit,
+      total: totalPostCount,
+      totalPages: Math.ceil(totalPostCount / limit),
+    },
+  };
 };
 
-// GetSinglePosts
 const getPostById = async (postId: string) => {
   // await prisma.post.update({
-  //   where: {
-  //     id: postId,
-  //   },
-  //   data: {
-  //     views: {
-  //       increment: 1,
+  //     where : {
+  //         id : postId,
   //     },
-  //   },
-  // });
+  //     data : {
+  //         views : {
+  //             increment : 1
+  //         },
+  //     }
+  // })
 
-  // // throw new Error('Fake Error!');
+  // throw new Error("Fake Error")
 
   // const post = await prisma.post.findUniqueOrThrow({
-  //   where: {
-  //     id: postId,
-  //   },
-  //   include: {
-  //     author: {
-  //       omit: {
-  //         password: true,
-  //       },
+  //     where : {
+  //         id : postId
   //     },
-  //     comments: {
-  //       where: {
-  //         status: CommentStatus.APPROVED,
-  //       },
-  //       orderBy: {
-  //         createdAt: 'desc',
-  //       },
-  //     },
-  //     _count: {
-  //       select: {
-  //         comments: true,
-  //       },
-  //     },
-  //   },
-  // });
 
-  // return post;
+  //     include : {
+  //         author : {
+  //             omit : {
+  //                 password : true
+  //             }
+  //         },
 
-  const transactionResult = await prisma.$transaction(
-    async tx => {
-      await tx.post.update({
-        where: {
-          id: postId,
+  //         comments : {
+  //             where : {
+  //                 status : CommentStatus.APPROVED
+  //             },
+
+  //             orderBy : {
+  //                 createdAt : "desc"
+  //             }
+  //         },
+
+  //         _count : {
+  //             select : {
+  //                 comments : true
+  //             }
+  //         }
+  //     }
+  // })
+
+  // return post
+
+  const transactionResult = await prisma.$transaction(async tx => {
+    await tx.post.update({
+      where: {
+        id: postId,
+      },
+      data: {
+        views: {
+          increment: 1,
         },
-        data: {
-          views: {
-            increment: 1,
+      },
+    });
+    // throw new Error("fake error")
+    const post = await tx.post.findUniqueOrThrow({
+      where: {
+        id: postId,
+        isPremium: false,
+      },
+
+      include: {
+        author: {
+          omit: {
+            password: true,
           },
         },
-      });
 
-      // throw new Error('Fake Error!');
+        comments: {
+          where: {
+            status: CommentStatus.APPROVED,
+          },
 
-      const post = await tx.post.findUniqueOrThrow({
-        where: {
-          id: postId,
-        },
-        include: {
-          author: {
-            omit: {
-              password: true,
-            },
-          },
-          comments: {
-            where: {
-              status: CommentStatus.APPROVED,
-            },
-            orderBy: {
-              createdAt: 'desc',
-            },
-          },
-          _count: {
-            select: {
-              comments: true,
-            },
+          orderBy: {
+            createdAt: 'desc',
           },
         },
-      });
-      return post;
-    },
-    {
-      maxWait: 15000, // Wait up to 15 seconds to grab a connection from the pool (default: 2s)
-      timeout: 20000, // Give the block up to 20 seconds to execute completely (default: 5s)
-    },
-  );
+
+        _count: {
+          select: {
+            comments: true,
+          },
+        },
+      },
+    });
+    return post;
+  });
+
   return transactionResult;
 };
 
-// UpdatePost
 const updatePost = async (
   postId: string,
   payload: IUpdatePostPayload,
   authorId: string,
   isAdmin: boolean,
 ) => {
-  // FindPost
   const post = await prisma.post.findUniqueOrThrow({
     where: {
       id: postId,
     },
   });
 
-  // IsAdminOrAuthor
   if (!isAdmin && post.authorId !== authorId) {
-    throw new Error("You don't have permission to update this post!");
+    throw new Error('You are not the owner of this post!');
   }
 
   const result = await prisma.post.update({
@@ -279,33 +432,24 @@ const updatePost = async (
       comments: true,
     },
   });
+
   return result;
 };
 
-// DeletePost
 const deletePost = async (
   postId: string,
   authorId: string,
   isAdmin: boolean,
 ) => {
-  // FindPost
   const post = await prisma.post.findUniqueOrThrow({
     where: {
       id: postId,
     },
   });
 
-  // IsAdminOrAuthor
   if (!isAdmin && post.authorId !== authorId) {
-    throw new Error("You don't have permission to delete this post!");
+    throw new Error('You are not the owner of this post!');
   }
-
-  // const result = await prisma.post.delete({
-  //   where: {
-  //     id: postId,
-  //   },
-  // });
-  // return result;
 
   await prisma.post.delete({
     where: {
@@ -314,80 +458,67 @@ const deletePost = async (
   });
 };
 
-// GetPostsStats
 const getPostsStats = async () => {
   const transactionResult = await prisma.$transaction(async tx => {
     // const totalPosts = await tx.post.count();
 
-    // // TotalPublishedPosts
     // const totalPublishedPosts = await tx.post.count({
-    //   where: {
-    //     status: PostStatus.PUBLISHED,
-    //   },
-    // });
-
-    // // TotalDraftPosts
+    //     where : {
+    //         status : PostStatus.PUBLISHED
+    //     }
+    // })
     // const totalDraftPosts = await tx.post.count({
-    //   where: {
-    //     status: PostStatus.DRAFT,
-    //   },
-    // });
-
-    // // TotalArchivedPosts
+    //     where : {
+    //         status : PostStatus.DRAFT
+    //     }
+    // })
     // const totalArchivedPosts = await tx.post.count({
-    //   where: {
-    //     status: PostStatus.ARCHIVED,
-    //   },
-    // });
+    //     where : {
+    //         status : PostStatus.ARCHIVED
+    //     }
+    // })
 
-    // // TotalComments
     // const totalComments = await tx.comment.count();
 
-    // // TotalApprovedComments
     // const totalApprovedComments = await tx.comment.count({
-    //   where: {
-    //     status: CommentStatus.APPROVED,
-    //   },
+    //     where : {
+    //         status : CommentStatus.APPROVED
+    //     }
     // });
-
-    // // TotalRejectedComments
     // const totalRejectedComments = await tx.comment.count({
-    //   where: {
-    //     status: CommentStatus.REJECT,
-    //   },
+    //     where : {
+    //         status : CommentStatus.REJECT
+    //     }
     // });
 
-    // //! NotGoodApproach
-    // // TotalPostViews
-    // /*
-    // const allPosts = await tx.post.findMany();
+    // //Not a good approach
+    // // const allPosts = await tx.post.findMany();
 
-    // let totalPostViews = 0;
+    // // let totalPostViews = 0;
 
-    // allPosts.forEach(post => {
-    //   totalPostViews = totalPostViews + post.views;
-    // });
-    // */
+    // // allPosts.forEach((post)=>{
+    // //     totalPostViews = totalPostViews + post.views
+    // // })
 
-    // //* GoodApproach - Aggregation
+    // //Good Approach
     // const totalPostViewsAggregate = await tx.post.aggregate({
-    //   _sum: {
-    //     views: true,
-    //   },
-    // });
+    //     _sum : {
+    //         views : true
+    //     }
+    // })
 
-    // const totalPostViews = totalPostViewsAggregate._sum.views;
+    // const totalPostViews = totalPostViewsAggregate._sum.views\
 
     // return {
-    //   totalPosts,
-    //   totalPublishedPosts,
-    //   totalDraftPosts,
-    //   totalArchivedPosts,
-    //   totalComments,
-    //   totalApprovedComments,
-    //   totalRejectedComments,
-    //   totalPostViews,
-    // };
+    //     totalPosts,
+    //     totalPublishedPosts,
+    //     totalDraftPosts,
+    //     totalArchivedPosts,
+    //     totalComments,
+    //     totalApprovedComments,
+    //     totalRejectedComments,
+    //     totalPostViews
+    // }
 
     const [
       totalPosts,
@@ -399,54 +530,40 @@ const getPostsStats = async () => {
       totalRejectedComments,
       totalPostViewsAggregate,
     ] = await Promise.all([
-      // TotalPosts
       await tx.post.count(),
-
-      // TotalPublishedPosts
       await tx.post.count({
         where: {
           status: PostStatus.PUBLISHED,
         },
       }),
-
-      // TotalDraftPosts
       await tx.post.count({
         where: {
           status: PostStatus.DRAFT,
         },
       }),
-
-      // TotalArchivedPosts
       await tx.post.count({
         where: {
           status: PostStatus.ARCHIVED,
         },
       }),
-
-      // TotalComments
       await tx.comment.count(),
-
-      // TotalApprovedComments
       await tx.comment.count({
         where: {
           status: CommentStatus.APPROVED,
         },
       }),
-
-      // TotalRejectedComments
       await tx.comment.count({
         where: {
           status: CommentStatus.REJECT,
         },
       }),
-
-      // Aggregation
       await tx.post.aggregate({
         _sum: {
           views: true,
         },
       }),
     ]);
+
     return {
       totalPosts,
       totalPublishedPosts,
@@ -455,14 +572,13 @@ const getPostsStats = async () => {
       totalComments,
       totalApprovedComments,
       totalRejectedComments,
-      // totalPostViews: totalPostViewsAggregate._sum.views,
       totalPostViews: totalPostViewsAggregate._sum.views,
     };
   });
+
   return transactionResult;
 };
 
-// GetMyPosts
 const getMyPosts = async (authorId: string) => {
   const result = await prisma.post.findMany({
     where: {
@@ -488,6 +604,7 @@ const getMyPosts = async (authorId: string) => {
       },
     },
   });
+
   return result;
 };
 

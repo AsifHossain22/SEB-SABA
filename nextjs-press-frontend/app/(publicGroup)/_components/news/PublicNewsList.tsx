@@ -17,8 +17,8 @@ export async function PublicNewsList() {
         views: 100,
         isPremium: false,
         authorId: '1',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+        createdAt: '14-7-2026',
+        updatedAt: '14-7-2026',
       },
     ],
   };

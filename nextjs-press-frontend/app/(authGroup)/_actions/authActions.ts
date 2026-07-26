@@ -1,8 +1,8 @@
 'use server';
 
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 
 type LoginState = {
   success: true;
@@ -15,6 +15,7 @@ type LoginState = {
 };
 
 export const loginAction = async (
+  redirectTo: string,
   prevState: LoginState,
   formData: FormData,
 ) => {
@@ -44,7 +45,6 @@ export const loginAction = async (
       maxAge: 60 * 60 * 24,
       sameSite: 'lax',
     });
-
     cookieStore.set('refreshToken', result.data.refreshToken, {
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7,
@@ -52,7 +52,15 @@ export const loginAction = async (
     });
 
     const decodedToken = jwt.decode(result.data.accessToken) as JwtPayload;
-    // console.log(decodedToken);
+
+    if (
+      redirectTo &&
+      typeof redirectTo === 'string' &&
+      redirectTo.startsWith('/') &&
+      !redirectTo.startsWith('//')
+    ) {
+      redirect(redirectTo);
+    }
 
     if (decodedToken.role === 'USER') {
       redirect('/dashboard');
